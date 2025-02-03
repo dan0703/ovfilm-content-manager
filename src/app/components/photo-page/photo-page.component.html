@@ -1,0 +1,32 @@
+<article>
+    <div class = "content">
+        <section class="hero-section">
+            <div class="contact-us">
+                <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'home')">
+                <img class="img-experience" [src]="imageUrl || 'assets/photo-page.jpg'" alt="Couple hugging face to face">
+            </div>
+            <div class="label-experience">
+                <textarea [(ngModel)]="headerText" class="p" placeholder="Escribe aquí el titulo..."></textarea>
+                <textarea [(ngModel)]="descriptionText" class="p" placeholder="Escribe aquí el contenido..."></textarea>
+                <h2><div [innerHTML]="formattedAboutTitle1" class="h2"> </div></h2>
+                <div [innerHTML]="formatteddescriptionText"></div>
+            </div>
+        </section>
+        <section class="multi-upload-section">
+            <h2>Subir imagenes</h2>
+            <input type="file" multiple accept="image/*" (change)="onMultipleFilesSelected($event)">
+            
+            <div class="preview-container">
+                <div *ngFor="let img of selectedImages; let i = index" class="preview">
+                    <img [src]="img" alt="Previsualización de imagen">
+                    <button (click)="removeImage(i)">✖</button>
+                </div>
+            </div>
+            <button type="submit" (click)="uploadPhotos()" class="button-upload">Subir fotos</button>
+
+        </section>
+        <section>
+            <app-photo-gallery></app-photo-gallery>
+        </section>
+    </div>
+</article>

@@ -1,0 +1,32 @@
+.listing {
+    padding-bottom: 30px;
+  }
+  .blog-title {
+    padding:  20px 0 0;
+    font-family:'Montserrat', sans-serif;
+    font-size: 25px;
+    font-weight: lighter;
+
+  }
+  .listing-photo {
+    height: 250px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .blog-date {
+    color: #80B9B1;
+    font-family:'Montserrat', sans-serif;
+    font-size: 12px;
+    padding:  0 0 20px;
+    font-weight: bold;
+}
+
+.blog-description{
+  font-family:'Montserrat', sans-serif;
+  font-weight:normal;
+  font-size: 14px;
+}
+img{
+  width: 100%;
+}

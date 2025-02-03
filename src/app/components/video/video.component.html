@@ -1,0 +1,59 @@
+<article>
+    <div class="content">
+        <section class="hero-section">
+            <div class="contact-us">
+                <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'home')">
+                <img class="img-experience" [src]="imageUrl || 'assets/home-photo.png'" alt="Couple hugging face to face">
+            </div>
+            <div class="label-experience">
+                <textarea [(ngModel)]="headerText" class="p" placeholder="Escribe aquí..."></textarea>
+                <h2><div [innerHTML]="formattedheaderText" class="h2"> </div></h2>
+                <textarea [(ngModel)]="descriptionText" class="p" placeholder="Escribe aquí..."></textarea>
+                <div [innerHTML]="formatteddescriptionText"></div>
+            </div>
+        </section>
+    </div>
+
+    <div class="hero-video-container">
+        <iframe 
+          [src]="sanitizedVideoUrl" 
+          frameborder="0" 
+          allow="autoplay; fullscreen; picture-in-picture" 
+          allowfullscreen 
+          class="hero-video">
+        </iframe>
+    </div>
+
+    <section class="video-carousel-container">
+        <div class="arrow-left-container" (click)="scrollCarousel(-1)">
+            <div class="arrow-left">
+                <svg viewBox="0 0 146.41 37.09">
+                    <polyline class="cls-1" points="19.25 36.38 1.41 18.54 19.25 .71"/>
+                    <line class="cls-1" x1="1.41" y1="18.54" x2="146.41" y2="18.54"/>
+                </svg>
+            </div>
+        </div>
+
+        <section class="view-videos-carousel" #carousel>
+            <figure 
+              class="img-container" 
+              *ngFor="let image of weddingReview.images; let i = index"
+              [class.active]="i === activeImageIndex"
+              (click)="updateVideoUrl(image.videoId, i)"> 
+              <img [src]="image.src" [alt]="image.alt" class="img-carousel">
+            </figure>
+        </section>
+
+        <div class="arrow-right-container" (click)="scrollCarousel(1)">
+            <div class="arrow-right">
+                <svg viewBox="0 0 146.41 37.09">
+                    <polyline class="cls-1" points="127.16 .71 145 18.54 127.16 36.38"/>
+                    <line class="cls-1" x1="145" y1="18.54" y2="18.54"/>
+                </svg>
+            </div>
+        </div>
+
+        <input type="text" [(ngModel)]="videoId" placeholder="https://vimeo.com/1021831845" class="h2">
+        <button type="submit" (click)="uploadVideo(videoId)">Guardar</button>
+    </section>
+</article>

@@ -1,0 +1,38 @@
+:host {
+  --content-padding: 10px;
+}
+
+main {
+  display: flex;
+  flex-direction: column; 
+  width: 100%;
+  min-height: 100vh; 
+}
+.container{
+  margin-left: 8%;
+  margin-right: 8%;
+}
+.home {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px));
+  width: 100%;
+  margin:0;
+}
+.content{
+  margin-top: 120px;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: white;  
+}
+
+.footer{
+  width: 100%;
+  
+  // background: yellow;
+}

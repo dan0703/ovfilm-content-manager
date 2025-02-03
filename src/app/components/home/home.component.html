@@ -1,0 +1,40 @@
+<article>
+    <div class = "content">
+        <section class="experience-section">
+            <div class="contact-us">
+                <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'home')">
+                <img class="img-experience" [src]="imageUrl || 'assets/home-photo.png'" alt="Couple hugging face to face">
+            </div>
+            <div class="label-experience">
+                <input type="text" [(ngModel)]="headerText" placeholder="Ingresa el encabezado" class="h2">
+                <h2>{{ headerText }}</h2>
+            </div>
+        </section>
+        <section class="about-us-section">
+            <div class="about-us">
+                <div class="contact-us">
+                    <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'about1')">
+                    <img class="img-experience" [src]="aboutImage1" alt="Bride and groom smiling with the photographer">
+                </div>
+                <div class="label-about-us">
+                    <textarea [(ngModel)]="aboutTitle1" class="p" placeholder="Escribe aquí..."></textarea>
+                    <h2><div [innerHTML]="formattedAboutTitle1" class="h2"> </div></h2>
+
+                    <textarea [(ngModel)]="aboutText" class="p" placeholder="Escribe aquí..."></textarea>
+                    <div [innerHTML]="formattedAboutText"></div>
+                </div>  
+                <div class="contact-us">
+                    <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'about2')">
+                    <img class="img-experience" [src]="aboutImage2" alt="Bride and groom with the photography team smiling together">
+                </div>
+    
+            </div>
+        </section>
+        <section class="reviews">
+            <h2>Reviews</h2>
+            <section >
+                <app-review></app-review>
+            </section>
+        </section>
+    </div>
+</article>

@@ -1,0 +1,10 @@
+<section class="listing" [routerLink]="['/blogDetail', blog.id]">
+    <img
+      class="listing-photo"
+      [src]="blog.imageUrl"
+      alt="Exterior photo of sss"
+    />
+    <h2 class="blog-title">{{ blog.title }}</h2>
+    <p class="blog-date"> {{ blog.date }}</p>
+    <p class="blog-description">{{ blog.description }}</p>
+  </section>

@@ -1,0 +1,11 @@
+<article>
+    <section class="header">
+        <h2>Blog</h2>
+    </section>
+    <section class="blog-list">
+        <app-blog-card class="blog-card"
+            *ngFor="let blog of blogList"
+            [blog]="blog"
+        ></app-blog-card> 
+    </section>
+</article>

@@ -1,0 +1,106 @@
+{
+  "blogs": [
+    {
+      "subtitle1": "Subtitle 1",
+      "content1": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "content2": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "subtitle2": "Subtitle 2",
+      "content3": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "imgUrl2": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956",
+      "imgUrl3": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956",
+      "id": 1,
+      "title": "Title of the Article",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 2,
+      "subtitle1": "Subtitle 2",
+      "content1": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "content2": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "subtitle2": "Subtitle 2",
+      "title": "Article 2",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 3,
+      "title": "Article 3",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 4,
+      "title": "Article 4",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 5,
+      "title": "Article 5",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 6,
+      "title": "Article 6",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 7,
+      "title": "Article 7",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 8,
+      "title": "Article 8",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 9,
+      "title": "Article 9",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 10,
+      "title": "Article 10",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 11,
+      "title": "Article 11",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 12,
+      "title": "Article 12",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    },
+    {
+      "id": 13,
+      "title": "Article 13",
+      "description": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.",
+      "date": "FEBRUARY / 3RD / 2024",
+      "imageUrl": "https://www.foxsports.com.mx/resizer/v2/SWIZVUD2VNGRVCB5UPRWWQJIEU.jpg?focal=853%2C281&auth=757da0d7f6b0ecc82bc103d1638d4c58b790e1a1824ec0d6700d59ae1120c71f&width=1700&height=956"
+    }
+  ]
+}

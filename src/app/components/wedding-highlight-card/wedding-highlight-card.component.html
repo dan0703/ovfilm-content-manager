@@ -1,0 +1,56 @@
+<section class="review-container">
+    <section class="wedding-info" [ngClass]= "{'reversed': reverseOrder}">
+        <h2>{{ weddingReview.name }}</h2>
+        <p>{{ weddingReview.date }}</p>
+        <div class="review-text-container" [ngClass]= "{'reversed': reverseOrder}">
+            <div [innerHTML]="formattedCommentReviewText"></div> 
+        </div>
+    </section>
+    <section class="view-wedding-container" [ngClass]= "{'reversed': reverseOrder}">
+        <ng-container *ngIf="!reverseOrder; else reversedTemplate">
+            <figure class="img-container" *ngFor="let image of weddingReview.images">
+                <img [src]="image.src" [alt]="image.alt">
+            </figure>
+            
+            <div class="view-wedding-label-container">
+                <a [routerLink]="['/video',weddingReview.videoId]">
+                    <h2 class="view-wedding-label">
+                        <p>View</p>
+                        <p>Wedding</p>
+                        <div class="arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 145.71 11.88" aria-hidden="true">
+                                <style>
+                                    .cls-1 { fill: none; stroke: #000; stroke-miterlimit: 10; }
+                                </style>
+                                <polyline class="cls-1" points="6.3 11.53 .71 5.94 6.3 .35"/>
+                                <line class="cls-1" x1=".71" y1="5.94" x2="145.71" y2="5.94"/>
+                            </svg>
+                        </div>
+                    </h2>
+                </a>
+            </div>
+        </ng-container>
+        <ng-template #reversedTemplate>
+            <div class="view-wedding-label-container" [ngClass]= "{'reversed': reverseOrder}">
+                <a [routerLink]="['/video', weddingReview.videoId]">
+                    <h2 class="view-wedding-label" [ngClass]= "{'reversed': reverseOrder}">
+                        <p [ngClass]= "{'reversed': reverseOrder}">View</p>
+                        <p [ngClass]= "{'reversed': reverseOrder}">Wedding</p>
+                        <div class="arrow" [ngClass]= "{'reversed': reverseOrder}">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 145.71 11.88" aria-hidden="true">
+                                <style>
+                                    .cls-1 { fill: none; stroke: #000; stroke-miterlimit: 10; }
+                                </style>
+                                <polyline class="cls-1" points="6.3 11.53 .71 5.94 6.3 .35"/>
+                                <line class="cls-1" x1=".71" y1="5.94" x2="145.71" y2="5.94"/>
+                            </svg>
+                        </div>
+                    </h2>
+                </a>
+            </div>
+            <figure class="img-container" *ngFor="let image of weddingReview.images">
+                <img [src]="image.src" [alt]="image.alt">
+            </figure>
+        </ng-template>
+    </section>
+</section>

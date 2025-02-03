@@ -1,0 +1,30 @@
+<div class="carousel">
+  <br/>
+  <div class="btn-close-container">
+    <img class="button-close" (click)="closeImageViewer()" src="assets/btn/close-btn.png" alt="Previous">
+  </div>
+  <br/>
+    <img class="buttons" (click)="previousImage()" src="assets/btn/arrow-btn-left.png" alt="Previous">
+  
+    <div class="image-container">
+      <img 
+        [src]="images[currentIndex].url" 
+        [alt]="'Imagen ' + (currentIndex + 1)"
+        (load)="onImageLoad(currentIndex)" 
+        *ngIf="images[currentIndex]?.url" 
+      >
+      <div class="loading" *ngIf="!images[currentIndex]?.loaded">
+        Loadding...
+      </div>
+      <div class="indicators">
+        <div 
+          *ngFor="let image of images; let i = index" 
+          [class.active]="i === currentIndex" 
+          (click)="currentIndex = i"
+        ></div>
+      </div>
+    </div>
+    
+    <img class="buttons" (click)="nextImage()" src="assets/btn/arrow-btn-rigth.png" alt="Previous">
+</div>
+  

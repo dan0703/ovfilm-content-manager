@@ -1,0 +1,34 @@
+<article class="Content">
+    <section>
+        <h2>{{blog?.title}}</h2>
+        <p class="blog-date"> {{ blog?.date }}</p>
+    </section>
+    <div class="blog-content">
+        <div class="article">
+            <h3>{{blog?.subtitle1}}</h3>
+            <p [innerHTML]="blog?.content1"></p>
+            <section>
+                <img [src]="blog?.imageUrl" alt="blog image" />
+            </section>
+            <p [innerHTML]="blog?.content2"></p>
+            <section *ngIf="blog?.imgUrl2" class="img2-container"> 
+                <img [src]="blog?.imgUrl2" alt="{{blog?.alt2}}" />
+                <img [src]="blog?.imgUrl3" alt="{{blog?.alt3}}" />
+            </section>
+            <h3>{{blog?.subtitle2}}</h3>
+            <p [innerHTML]="blog?.content2"></p>
+        </div>
+        <div class="blog-sidebar">
+            <h3>Recent Posts</h3>
+            <section class="recent-blogs">
+                <ul>
+                    <div *ngFor="let recentBlog of blogList" class="recent-blog-card">
+                        <h2 [routerLink]="['/blogDetail', recentBlog.id]">{{recentBlog.title}}</h2>
+                        <p>{{recentBlog.date}}</p>
+                        <hr class="separator">
+                    </div>
+                </ul>
+            </section>  
+        </div>
+    </div>
+</article>

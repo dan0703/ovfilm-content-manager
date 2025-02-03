@@ -1,0 +1,84 @@
+<section >
+    <div class="review-form">
+        <div class="review-form-inputs">
+            <input type="text" [(ngModel)]="coupleNames1" placeholder="Nombre de los novios" class="h2">
+            <input type="text" [(ngModel)]="weddingDate1" placeholder="Fecha de la boda" class="h2">
+            <textarea [(ngModel)]="comment1" class="p" placeholder="Comentario..."></textarea>
+            <input type="text" [(ngModel)]="videoId1" (input)="videoId1" placeholder="https://vimeo.com/1021831845" class="h2">
+        </div>
+        <div class="review-form-images">
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img1')">
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img2')">
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img3')">
+        </div>
+    </div>
+    <app-wedding-highlight-card
+        [weddingReview]="{
+            name: coupleNames1,
+            date: weddingDate1,
+            reviewText: comment1,
+            videoId: extractNumbers(videoId1),
+            images: [
+            { src: review1_Img1 ? review1_Img1.toString() : '', alt: 'Bride and groom smiling' },
+            { src: review1_Img2 ? review1_Img2.toString() : '', alt: 'Bride and groom look at the ocean' },
+            { src: review1_Img3 ? review1_Img3.toString() : '', alt: 'Bride and groom smiling' }
+            ]
+        }"
+        [reverseOrder]="false">
+    ></app-wedding-highlight-card>
+    <div class="review-form">
+        <div class="review-form-inputs">
+            <input type="text" [(ngModel)]="coupleNames2" placeholder="Nombre de los novios" class="h2">
+            <input type="text" [(ngModel)]="weddingDate2" placeholder="Fecha de la boda" class="h2">
+            <textarea [(ngModel)]="comment2" class="p" placeholder="Comentario..."></textarea>
+            <input type="text" [(ngModel)]="videoId2" (input)="videoId2" placeholder="https://vimeo.com/1021831845" class="h2">
+        </div>
+        <div class="review-form-images">
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img4')">
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img5')">
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img6')">
+        </div>
+    </div>
+    <app-wedding-highlight-card
+        [weddingReview]="{
+            name: coupleNames2,
+            date: weddingDate2,
+            reviewText: comment2,
+            videoId: extractNumbers(videoId2),
+            images: [
+            { src: review2_Img1 ? review2_Img1.toString() : '', alt: 'Bride and groom smiling' },
+            { src: review2_Img2 ? review2_Img2.toString() : '', alt: 'Bride and groom look at the ocean' },
+            { src: review2_Img3 ? review2_Img3.toString() : '', alt: 'Bride and groom smiling' }
+            ]
+        }"
+        
+        [reverseOrder]="true">
+    ></app-wedding-highlight-card>
+    <div class="review-form">
+        <div class="review-form-inputs">
+            <input type="text" [(ngModel)]="coupleNames3" placeholder="Nombre de los novios" class="h2">
+            <input type="text" [(ngModel)]="weddingDate3" placeholder="Fecha de la boda" class="h2">
+            <textarea [(ngModel)]="comment3" class="p" placeholder="Comentario..."></textarea>
+            <input type="text" [(ngModel)]="videoId3" (input)="videoId3" placeholder="https://vimeo.com/1021831845" class="h2">
+        </div>
+        <div class="review-form-images">
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img7')">
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img8')">
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img9')">
+        </div>
+    </div>
+    <app-wedding-highlight-card
+        [weddingReview]="{
+            name: coupleNames3,
+            date: weddingDate3,
+            reviewText: comment3,
+            videoId: extractNumbers(videoId3),
+            images: [
+            { src: review3_Img1 ? review3_Img1.toString() : '', alt: 'Bride and groom smiling' },
+            { src: review3_Img2 ? review3_Img2.toString() : '', alt: 'Bride and groom look at the ocean' },
+            { src: review3_Img3 ? review3_Img3.toString() : '', alt: 'Bride and groom smiling' }
+            ]
+        }"
+        [reverseOrder]="false">
+    ></app-wedding-highlight-card>
+</section>

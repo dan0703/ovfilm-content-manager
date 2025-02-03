@@ -1,0 +1,139 @@
+.header {
+  display: flex;
+  height: 100px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0px;
+  font-family:'Montserrat', sans-serif;
+}
+.nav{
+  display: flex ;
+  align-items: end;
+  width: 100%;
+  margin-bottom: 25px;
+  
+}
+.nav-container{
+  display: flex;
+  height: 100px;
+  border-bottom: solid 1px black;
+  width: 50%;
+  margin-right: 8%;
+}
+img {
+  width: 175px;
+  
+}
+.lenguage{
+  display: flex;
+  align-items:space-between;
+  height: 100%;
+  gap: 28px;
+}
+.logo{
+  display: flex;
+  align-items:end;
+  margin-left: 8% ;
+  padding-bottom: 20px;
+  height: 100%;
+
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  justify-content: space-between;
+  color: black;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: black;
+  font-weight: 20px;
+  transition: color 0s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #80B9B1; 
+  text-decoration: underline;
+  text-underline-offset: 10px;
+  text-decoration-thickness: 3px; 
+  cursor: pointer;
+}
+
+.menu {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 20pt;
+  font-family:'Montserrat', sans-serif;
+  color: white;
+  cursor: pointer;  
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .nav-links.active {
+    display: flex; 
+  }
+
+  .menu {
+    display: block; 
+  }
+
+  .nav-links a {
+    color: black;
+
+  }
+  .nav-links a:hover,
+  .nav-links a.active {
+    color: black; 
+    text-decoration: underline;
+    text-underline-offset: 10px;
+    text-decoration-thickness: 3px; 
+  }
+}
+@media (max-width: 368px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .nav-links.active {
+    display: flex; 
+  }
+
+  .menu {
+    display: block; 
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    color: black; 
+    text-decoration: underline;
+    text-underline-offset: 10px;
+    text-decoration-thickness: 3px; 
+  }
+}
+

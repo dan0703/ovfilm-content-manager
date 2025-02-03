@@ -1,0 +1,116 @@
+.view-wedding-container{
+    display: grid;
+    grid-template-columns: 30% 30% 30% 10%;
+    
+    &.reversed {
+        grid-template-columns: 11.5% 30% 30% 30%; 
+      }
+}
+.view-wedding-container img{
+    max-width: 100%;
+    max-height: 100%;
+    transition: all 0.1s ease;
+    filter: grayscale(100%);
+    position: relative;
+}
+.review-container{
+    margin-bottom: 10%;
+}
+.img-container{
+    width: 95%;
+    padding-top: 7%;
+    border-top: solid 1px black;
+}
+
+.img-container:hover{
+    border-top: solid 3px #80B9B1;
+    transition: all 0.3s ease;
+
+    &:hover img {
+        transition: all 0.3s ease;
+        transform: scale(1.2);
+        box-shadow: 15px 14px 16px rgba(0, 0, 0, 0.5); 
+        filter: grayscale(0%);
+        z-index: 100;
+    }
+}
+.view-wedding-label-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    text-decoration: none;
+}
+.view-wedding-label-container a{
+    text-decoration: none; 
+    color: black;
+}
+.view-wedding-label{
+    height:fit-content;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    font-weight: lighter;
+    text-decoration: underline;
+    transition: all 0.3s ease;  
+    
+}
+.view-wedding-label p{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  
+    align-items: flex-end;
+    text-decoration: none;
+
+    &.reversed {
+        align-items: start;
+      }
+}
+
+.view-wedding-label:hover {
+    cursor: pointer;
+    transition: all 0.3s ease;  
+    transform: scale(1.1);  
+    color: #80B9B1;
+    &:hover svg .cls-1 {
+      stroke: #80B9B1;
+    }
+  }
+  
+.wedding-info{
+    display: flex;
+    flex-direction: column;
+    &.reversed {
+        align-items: end;
+    }
+}
+.wedding-info p{
+    color: #80B9B1;
+    font-size: 12px;
+}
+
+.wedding-info h2{
+    font-weight: lighter;
+}
+.review-text-container{
+
+    margin-top: 30px;
+    margin-bottom: 30px;
+    &.reversed {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+    }
+}
+
+.review-text-container div{
+    color: black;
+    width: 60%;
+    font-size: 12px;
+    
+}
+.arrow {
+    &.reversed {
+        transform: rotate(180deg);
+        width: 90%;
+    }
+}

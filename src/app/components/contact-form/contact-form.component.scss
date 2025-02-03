@@ -1,0 +1,139 @@
+.application-form {
+  padding: 20px;
+  margin-right: 20px;
+  border: solid 1px ;
+  justify-content: center;
+}
+label, input, textarea {
+display: block;
+font-family:'Montserrat', sans-serif;
+
+}
+label {
+color: black;
+text-transform: uppercase;
+font-size: 12pt;
+margin-top: 20px;
+}
+
+select {
+  font-size: 12pt;
+  width: 100%;
+  height: 40px;
+  border: solid 0.5px;
+  margin-top: 20px;
+  padding: 5px;
+  box-sizing: border-box;
+  background-color: white;
+  font-family: 'Montserrat', sans-serif;
+}
+
+select:focus {
+  outline: none;
+  border: solid 1px #80B9B1; /* Color al enfocarse */
+}
+
+option {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12pt;
+}
+
+button{
+  font-family:'Montserrat', sans-serif;
+  font-size: 13px;
+  background: #80B9B1;
+  color: white;
+  padding: 10px 30px;
+  border: none;
+  margin-top: 20px;
+}
+button:hover{
+  background: #5f8b82;
+  cursor: pointer;
+}
+
+input {
+font-size: 12pt;
+width: auto;
+height: 40px;
+border: solid .5px;
+margin-top: 20px;
+width: 100%;
+}
+
+.inputNameGroup{
+display: grid;
+column-gap: 10px;
+row-gap: 14px;
+grid-template-columns: repeat(auto-fill, minmax(45vh, auto));
+height: auto;
+justify-content: space-between;
+
+}
+.content {
+display: grid;
+column-gap: 20px;
+row-gap: 14px;
+grid-template-columns: 30% 70%;
+margin-top: 10%;
+height: auto;
+justify-content: space-between;
+padding-top: 90px;
+padding-bottom: 90px;
+}
+
+
+.dateInputGroup{
+display: grid;
+column-gap: 20px;
+row-gap: 14px;
+grid-template-columns: repeat(auto-fill, minmax(200px, auto));
+height: auto;
+justify-content: space-between;
+
+} 
+.questionsInput{
+margin-top: 20px;
+height: 100px; 
+min-height: 40px; 
+width: 100%; 
+resize: vertical; 
+padding: 10px; 
+font-size: 16px; 
+border: 1px solid #ccc; 
+box-sizing: border-box; 
+
+}
+.contact-us{
+font-family:'Montserrat', sans-serif;
+font-size: 13px;
+margin-right: 20px;
+}
+p{
+margin-top: 20px;
+}
+h2{
+font-family:'Montserrat', sans-serif;
+font-size: 50px;
+font-weight: lighter;
+}
+
+small {
+  color: red;
+  font-size: 0.8em;
+}
+input.ng-touched.ng-invalid, select.ng-touched.ng-invalid {
+  border: 1px solid red;
+}
+
+@media (max-width: 824px) {
+  .inputNameGroup{
+      grid-template-columns: repeat(auto-fill, minmax(auto, 100%));
+  }
+  .content {
+    grid-template-columns: 100%;
+  }
+  .dateInputGroup{
+    grid-template-columns: repeat(auto-fill, minmax(auto, 100%));
+  }
+}

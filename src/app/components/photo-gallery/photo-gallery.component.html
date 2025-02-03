@@ -1,0 +1,27 @@
+<div class="content" *ngIf="!isImageViewerOpen">
+  <div class="gallery-container" (scroll)="onScroll($event)">
+    <section class="view-videos-carousel">
+      <figure 
+        class="img-container" 
+        *ngFor="let image of imageList; let i = index"
+        [class.active]="i === activeImageIndex"
+        (click)="openImageViewer(image.IMAGE_LINK, i)"> 
+        <div class="img-placeholder" *ngIf="!image.loaded"></div>
+        <img 
+          [src]="image.IMAGE_LINK" 
+          [alt]="image.IMAGE_LINK" 
+          (load)="imageLoaded(i)"
+          [class.loaded]="image.loaded"
+        >
+      </figure>
+    </section>
+  </div>
+  <div class="custom-scrollbar-container">
+    <div class="custom-scrollbar">
+      <div class="custom-thumb" [style.top]="thumbPosition"></div>
+    </div>
+  </div>
+</div>
+<div class="image-viewer" *ngIf="isImageViewerOpen" >
+  <app-carousel [images]="images" (close)="closeImageViewer()" [currentIndex]="currentIndex"  ></app-carousel>
+</div>

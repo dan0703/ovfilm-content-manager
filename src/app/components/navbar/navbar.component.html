@@ -1,0 +1,23 @@
+<header class = "header">
+    <div class="logo">
+        <img class="brand-logo" src="assets/logo.png" alt="logo" aria-hidden="true" />
+    </div>
+    <div class="nav-container">
+        <nav class = "nav">
+            <ul class = "nav-links" [class.active]="isMenuOpen">
+                <li><a [routerLink]="['/']">Home</a></li>
+                <li><a [routerLink]="['/video', 996335145]">Video</a></li>
+                <li><a [routerLink]="['/photo']">Photo</a></li>
+                <li><a [routerLink]="['/blog']">Blog</a></li>
+                <li><a [routerLink]="['/contact']">Contact</a></li>
+                <div class="lenguage">
+                    <li>|</li>
+                    <li><a>EN</a></li>
+                    <li><a >ES</a></li>
+                    <!-- (click)="scrollToSection('contact')" -->
+                </div>
+                </ul>
+            <button class="menu" (click)="toggleMenu()">&#9776;</button>
+        </nav>
+    </div>
+</header>

@@ -1,0 +1,91 @@
+<article>
+  <div class="content">
+      <section class="contact-us">
+        <h2>Get in Touch With Us!</h2>
+        <p>
+          We would love to hear from you! If you have any questions about our services or would like more information, please feel free to fill out our contact form. We are here to help you immortalize those magical moments that surround your love story.
+        </p>
+        <p>
+          We believe it’s super important for you to connect with your team before your big day! Having that chemistry helps you feel comfortable and relaxed around us. So, we’d love to invite you to a video call where we can chat about your needs and what you envision for your special day!
+        </p>
+      </section>
+      <section class="application-form">
+        <form [formGroup]="applyForm" (submit)="submitApplication()">
+
+          <label for="first-name">Complete Name’s*</label>
+          <div class="inputNameGroup">
+            <input id="first-name" type="text" formControlName="firstName" placeholder="First name..." />
+            <input id="last-name" type="text" formControlName="lastName" placeholder="Last name..." />
+            <div *ngIf="applyForm.controls.firstName?.touched && applyForm.controls.firstName?.invalid">
+              <small *ngIf="applyForm.controls.firstName.errors?.['required']">Name is required</small>
+              <small *ngIf="applyForm.controls.firstName.errors?.['minlength']">Must be at least 2 characters</small>
+            </div>
+          </div>    
+
+          <label for="email">Email*</label>
+          <input id="email" type="email" formControlName="email" placeholder="janedoe@gmail.com..." />
+          <div *ngIf="applyForm.controls.email?.touched && applyForm.controls.email?.invalid">
+            <small *ngIf="applyForm.controls.email.errors?.['required']">Email is required</small>
+            <small *ngIf="applyForm.controls.email.errors?.['email']">Enter a valid email</small>
+          </div>
+
+          <label for="phone">Phone Number*</label>
+          <input id="phone" type="tel" formControlName="phone" placeholder="  Phone">
+          <div *ngIf="applyForm.controls.phone?.touched && applyForm.controls.phone?.invalid">
+            <small *ngIf="applyForm.controls.phone.errors?.['required']">Phone is required</small>
+            <small *ngIf="applyForm.controls.phone.errors?.['pattern']">Enter a valid phone number</small>
+          </div>
+
+          <!-- <label for="first-name">Date of the Event*</label>
+          <div class="dateInputGroup">
+              <input id="day" type="text" formControlName="day" placeholder="  Day" />
+              <input id="month" type="text" formControlName="month" placeholder="  Month">
+              <input id="year" type="text" formControlName="year" placeholder="  Year">
+          </div> -->
+          <label for="event-date">Date of the Event*</label>
+          <div class="dateInputGroup">
+            <select id="day" formControlName="day">
+              <option value="" disabled selected>Day</option>
+              <option *ngFor="let d of days" [value]="d">{{ d }}</option>
+            </select>
+            <select id="month" formControlName="month">
+              <option value="" disabled selected>Month</option>
+              <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+            </select>
+            <select id="year" formControlName="year">
+              <option value="" disabled selected>Year</option>
+              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+
+          <label for="location">Location*</label>
+          <input id="location" type="text" formControlName="location" placeholder="  Tulum...">
+          <div *ngIf="applyForm.controls.location?.touched && applyForm.controls.location?.invalid">
+            <small *ngIf="applyForm.controls.location.errors?.['required']">Location is required</small>
+          </div>
+
+          <label for="doubts">When and How did you Get Engaged?*</label>
+          <!-- <div *ngIf="applyForm.controls.doubts?.touched && applyForm.controls.doubts?.invalid">
+            <small *ngIf="applyForm.controls.doubts.errors?.['required']">T is required</small>
+            <small *ngIf="applyForm.controls.doubts.errors?.['pattern']">Enter a valid phone number</small>
+          </div> -->
+          <textarea 
+              class="questionsInput" 
+              id="doubts" 
+              formControlName="doubts" 
+              placeholder="Last year on a romatic trip..."
+           ></textarea>
+
+          <label for="hfind-us">How did you Find Out About Us?*</label>
+          <input id="hfind" type="text" formControlName="hfind" placeholder="  Facebook...">
+          <button type="submit" [disabled]="applyForm.invalid">SEND</button>
+          <small *ngIf="submitAttempted && applyForm.invalid " style="color: red;">
+            Please fill out all required fields.
+          </small>
+          <small *ngIf="submitRequestSuccessfully" style="color: black;">
+            Email sent successfully.
+          </small>
+        </form>
+      </section>
+  </div>
+</article>

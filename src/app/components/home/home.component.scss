@@ -1,0 +1,82 @@
+.content {
+    height: auto;
+    font-family:'Montserrat', sans-serif;
+}
+
+h2{
+    font-size: 50px;
+    font-weight: lighter;
+}
+p{
+    margin-bottom: 1rem;
+    font-size: 15px;
+}
+
+.experience-section{
+    display: grid;
+    column-gap: 50px;
+    grid-template-columns: 60% 40%;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+}
+input{
+    width: 100%;
+    height: auto;
+    min-height: 50px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border: 1px solid black;
+}
+
+textarea{
+    width: 100%;
+    height: auto;
+    min-height: 50px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    border: 1px solid black;
+}
+
+img{
+    width: 100%;
+}
+.label-experience{
+    margin-right: 50px;
+}
+section{
+    padding-top: 90px;
+    padding-bottom: 90px;
+}
+
+.reviews section{
+    padding-bottom: 0px;
+}
+.reviews{
+    padding-bottom: 0px;
+}
+
+.about-us{
+    display: grid;
+    grid-template-columns: 27% 46% 27%;
+}
+.about-us-section{
+    border-bottom: 1px solid black;
+
+}
+.about-us-section h2 {
+    font-size: 50px;
+}
+.label-about-us{
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.about-us img{
+    margin-top: 125px;
+}
+
+
+
+
+
+
