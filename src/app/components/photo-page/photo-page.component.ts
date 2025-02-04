@@ -26,7 +26,7 @@ uploadPhotos() {
     return;
   }
 
-  this.imageService.login('ovfilm', 'OV01022025').subscribe({
+  this.imageService.login('ovfilm@gmail.com', 'OV2025').subscribe({
     next: (response) => {
       console.log("Inicio de sesión exitoso:", response);
       if (response.token) {

@@ -33,7 +33,6 @@ export class BlogDetailComponent {
   constructor(private route: ActivatedRoute, private blogService: BlogService) {
     this.blogService.getAllBlogs().then((blogList: BlogSummary[]) => {
       this.blogList = blogList;
-      console.log('Blog List:', this.blogList[0]);
     });
   }
 
@@ -46,11 +45,9 @@ export class BlogDetailComponent {
   }
   private loadBlog() {
     const blogId = parseInt(this.route.snapshot.params['id'], 10);
-    console.log('BlogDetailComponent', blogId);
 
     this.blogService.getBlogById(blogId).then((blog: Blog | undefined) => {
       this.blog = blog;
-      console.log('Blog:', this.blog);
     });
   }
 }

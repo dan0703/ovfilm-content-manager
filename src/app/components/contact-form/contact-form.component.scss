@@ -38,6 +38,16 @@ option {
   font-size: 12pt;
 }
 
+textarea{
+  width: 100%;
+  height: auto;
+  min-height: 50px;
+  margin-bottom: 20px;
+  padding-left: 10px;
+  border: 1px solid black;
+  margin-top: 20px;
+}
+
 button{
   font-family:'Montserrat', sans-serif;
   font-size: 13px;

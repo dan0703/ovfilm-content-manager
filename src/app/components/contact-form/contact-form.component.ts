@@ -4,11 +4,12 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { ActivatedRoute } from '@angular/router';
 import { ContactService } from '../../services/contact.service';
 import { ServiceRequest } from '../../models/service-request/service-request';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './contact-form.component.html',
   styleUrl: './contact-form.component.scss'
 })
@@ -16,6 +17,8 @@ export class ContactFormComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   contactService = inject(ContactService);
   serviceRequest: ServiceRequest | undefined;
+  headerText: String = "";
+  descriptionText: String="";
   
   applyForm = new FormGroup({
     firstName: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -73,6 +76,8 @@ submitApplication() {
     { value: 12, name: 'December' },
   ];
   years: number[] = Array.from({ length: 50 }, (_, i) => new Date().getFullYear() + i);
-
+  get formattedDescriptionText(): string {
+    return this.descriptionText.replace(/\n/g, '<br>');
+  }
 }
 

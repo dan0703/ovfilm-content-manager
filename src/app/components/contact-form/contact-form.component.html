@@ -1,7 +1,10 @@
 <article>
   <div class="content">
       <section class="contact-us">
-        <h2>Get in Touch With Us!</h2>
+        <input type="text" [(ngModel)]="headerText" placeholder="Ingresa el encabezado" class="h2">
+        <h2>{{ headerText }}</h2>
+        <textarea [(ngModel)]="descriptionText" class="p" placeholder="Escribe aquí..."></textarea>
+        <div [innerHTML]="formattedDescriptionText"></div>
         <p>
           We would love to hear from you! If you have any questions about our services or would like more information, please feel free to fill out our contact form. We are here to help you immortalize those magical moments that surround your love story.
         </p>

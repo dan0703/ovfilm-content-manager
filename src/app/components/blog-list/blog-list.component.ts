@@ -17,7 +17,6 @@ export class BlogListComponent {
   constructor() {
     this.blogService.getAllBlogs().then((blogList: BlogSummary[]) => {
       this.blogList = blogList;
-      console.log('Blog List:', this.blogList[0]);
     });
   }
 }
