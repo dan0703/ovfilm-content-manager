@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ImageService {
-  private url = 'http://garmannetworks.online:780';
+  private url = 'https://danjoshua.xyz';
   private token: string | null = null;
 
   constructor(private http: HttpClient) {}
@@ -23,18 +23,12 @@ export class ImageService {
 
   uploadFile(image: File): Observable<any> {
     const formData = new FormData();
-    formData.append('file', image);
-  
-    // 🔹 Obtener la cookie guardada
-    const sessionCookie = localStorage.getItem("sessionCookie");
+    formData.append('file', image);  
+
+    console.log('🔹 Archivo añadido:', image.size);
   
     return this.http.post(`${this.url}/files/upload`, formData, {
-      headers: new HttpHeaders({
-        'Cookie': sessionCookie || '' // 🔹 Enviar la cookie manualmente
-      }),
-      withCredentials: true // 🔹 Asegurar que se envíe si el servidor lo permite
+      withCredentials: true,  
     });
   }
-  
-
 }
