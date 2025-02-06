@@ -35,31 +35,39 @@ async uploadPhotos() {
     });
   }
 
-startUpload() {
-  if (this.selectedImages.length === 0) {
-    console.log("No hay imágenes para subir.");
-    return;
-  }
-  for (let image of this.selectedImages) {
-    this.imageService.uploadFile(image).subscribe({
-      next: (uploadResponse) => console.log("Imagen subida con éxito:", uploadResponse),
-      error: (uploadError) => console.error("Error al subir la imagen:", uploadError)
-    });
-  }
-}
+  startUpload() {
+    if (this.selectedImages.length === 0) {
+      console.log("No hay imágenes para subir.");
+      return;
+    }
+    console.log(this.selectedImages.length);
 
-
-  onMultipleFilesSelected(event: any) {
-    if (event.target.files) {
-        for (let file of event.target.files) {
-            const reader = new FileReader();
-            reader.onload = (e: any) => {
-                this.selectedImages.push(e.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
+    for (let image of this.selectedImages) {
+      console.log(image.name);
+      this.imageService.uploadFile(image).subscribe({
+        next: (uploadResponse) => console.log("Imagen subida con éxito:", uploadResponse),
+        error: (uploadError) => console.error("Error al subir la imagen:", uploadError)
+      });
     }
   }
+  // onMultipleFilesSelected(event: any) {
+  //   if (event.target.files) {
+  //       for (let file of event.target.files) {
+  //           const reader = new FileReader();
+  //           reader.onload = (e: any) => {
+  //               this.selectedImages.push(e.target.result);
+  //           };
+  //           reader.readAsDataURL(file);
+  //       }
+  //   }
+  // }
+  onMultipleFilesSelected(event: any) {
+    if (event.target.files) {
+      this.selectedImages = Array.from(event.target.files);
+      console.log('Archivos seleccionados:', this.selectedImages);
+    }
+  }
+  
 
 removeImage(index: number) {
   this.selectedImages.splice(index, 1);

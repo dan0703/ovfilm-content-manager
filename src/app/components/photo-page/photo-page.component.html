@@ -14,7 +14,7 @@
         </section>
         <section class="multi-upload-section">
             <h2>Subir imagenes</h2>
-            <input type="file" multiple accept="image/*" (change)="onMultipleFilesSelected($event)">
+            <input type="file" multiple (change)="onMultipleFilesSelected($event)">
             
             <div class="preview-container">
                 <div *ngFor="let img of selectedImages; let i = index" class="preview">
