@@ -16,37 +16,38 @@ export class PhotoPageComponent {
   headerText: string = '';
   imageUrl: string | ArrayBuffer | null = null;
   descriptionText: String='';
-  selectedImages: File[] = []; // Ahora guardamos los archivos
+  selectedImages: File[] = []; 
 
-constructor(private imageService: ImageService) {} // Inyectamos el servicio
+constructor(private imageService: ImageService) {
+} 
+async ngOnInit() {
+  await this.uploadPhotos();
+}
 
-uploadPhotos() {
+async uploadPhotos() {
+    this.imageService.login('ovfilm@gmail.com', 'OV2025').subscribe({
+      next: (response) => {
+        console.log("Inicio de sesión exitoso:", response);
+      },
+      error: (error) => {
+        console.error("Error al iniciar sesión:", error);
+      }
+    });
+  }
+
+startUpload() {
   if (this.selectedImages.length === 0) {
     console.log("No hay imágenes para subir.");
     return;
   }
-
-  this.imageService.login('ovfilm@gmail.com', 'OV2025').subscribe({
-    next: (response) => {
-      console.log("Inicio de sesión exitoso:", response);
-      if (response.token) {
-        this.imageService.setToken(response.token);
-        for (let image of this.selectedImages) {
-          this.imageService.uploadFile(image).subscribe({
-            next: (uploadResponse) => console.log("Imagen subida con éxito:", uploadResponse),
-            error: (uploadError) => console.error("Error al subir la imagen:", uploadError)
-          });
-        }
-      } else {
-        console.error("No se recibió un token en la respuesta del login:", response);
-      }
-    },
-    error: (error) => {
-      console.error("Error al iniciar sesión:", error);
-      console.error("Detalles del error:", error.error);
-    }
-  });
+  for (let image of this.selectedImages) {
+    this.imageService.uploadFile(image).subscribe({
+      next: (uploadResponse) => console.log("Imagen subida con éxito:", uploadResponse),
+      error: (uploadError) => console.error("Error al subir la imagen:", uploadError)
+    });
+  }
 }
+
 
   onMultipleFilesSelected(event: any) {
     if (event.target.files) {

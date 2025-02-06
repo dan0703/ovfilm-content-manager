@@ -18,9 +18,9 @@ export class PhotoGalleryComponent {
   images: { url: string, loaded: boolean }[] = [];
   currentIndex: number = 0;
 
-  async ngOnInit() {
-    await this.loadImages();
-  }
+  // async ngOnInit() {
+  //   await this.loadImages();
+  // }
 
   async loadImages() {
     const apiUrl = 'http://garmannetworks.online:781/imagelist';
