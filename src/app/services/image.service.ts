@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ImageService {
-  private url = 'https://danjoshua.xyz';
-  private token: string | null = null;
+  private url = 'https://garmannetworks.online';
+  private token: string | null = null;  
 
   constructor(private http: HttpClient) {}
 
