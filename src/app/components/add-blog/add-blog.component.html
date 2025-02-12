@@ -1,0 +1,53 @@
+<article class="Content">
+    <div class="review-form">
+        <div >
+            <input type="text" [(ngModel)]="title" placeholder="Titulo del Articulo" class="h2">
+            <input type="text" [(ngModel)]="date" placeholder="Fecha del articulo" class="h2">
+            <input type="text" [(ngModel)]="subtitle_1" placeholder="Subtitulo 1" class="h2">
+            <textarea [(ngModel)]="content_1" class="p" placeholder="Contenido 1..."></textarea>
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img1')">
+            
+        </div>
+        <div>
+            <textarea [(ngModel)]="content_2" class="p" placeholder="Contenido 2..."></textarea>
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img2')">
+            <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img3')">
+    
+            <input type="text" [(ngModel)]="subtitle_2" placeholder="Subtitulo 2" class="h2">
+            <textarea [(ngModel)]="content_3" class="p" placeholder="Contenido 3..."></textarea>
+        </div>
+    </div>
+    
+    <section>
+        <h2>{{title}}</h2>
+        <p class="blog-date"> {{ date }}</p>
+    </section>
+    <div class="blog-content">
+        <div class="article">
+            <h3>{{subtitle_1}}</h3>
+            <p [innerHTML]="formattedContentText_1"></p>
+            <section>
+                <img [src]="img_1" alt="blog image" />
+            </section>
+            <div [innerHTML]="formattedContentText_2"></div>
+            <section *ngIf="img_2" class="img2-container"> 
+                <img [src]="img_2" alt="{{blog?.alt2}}" />
+                <img [src]="img_3" alt="{{blog?.alt3}}" />
+            </section>
+            <h3>{{subtitle_2}}</h3>
+            <p [innerHTML]="formattedContentText_3"></p>
+        </div>
+        <div class="blog-sidebar">
+            <h3>Recent Posts</h3>
+            <section class="recent-blogs">
+                <ul>
+                    <div *ngFor="let recentBlog of blogList" class="recent-blog-card">
+                        <h2 [routerLink]="['/blogDetail', recentBlog.id]">{{recentBlog.title}}</h2>
+                        <p>{{recentBlog.date}}</p>
+                        <hr class="separator">
+                    </div>
+                </ul>
+            </section>  
+        </div>
+    </div>
+</article>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CarouselComponent } from "../carousel/carousel.component";
 import { Image } from '../../models/image/image';
 
@@ -12,12 +12,11 @@ import { Image } from '../../models/image/image';
 })
 export class PhotoGalleryComponent {
   
-  imageList: Image[] = [];
   thumbPosition: string = '0px';  
   activeImageIndex: number | null = null;
   images: { url: string, loaded: boolean }[] = [];
   currentIndex: number = 0;
-
+  @Input() imageList: Image[] = []; 
   // async ngOnInit() {
   //   await this.loadImages();
   // }
@@ -27,7 +26,6 @@ export class PhotoGalleryComponent {
     try {
       const response = await fetch(apiUrl);
       this.imageList = await response.json();
-      // Poblar images con IMAGE_LINK y establecer loaded en false por defecto
       this.images = this.imageList.map((img: Image) => ({
         url: img.IMAGE_LINK,
         loaded: false

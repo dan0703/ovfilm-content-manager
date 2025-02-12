@@ -3,7 +3,7 @@ import { PhotoGalleryComponent } from "../photo-gallery/photo-gallery.component"
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImageService } from '../../services/image.service';
-
+import { Image } from '../../models/image/image';
 
 @Component({
   selector: 'app-photo-page',
@@ -17,6 +17,8 @@ export class PhotoPageComponent {
   imageUrl: string | ArrayBuffer | null = null;
   descriptionText: String='';
   selectedImages: File[] = []; 
+  imageList: Image[] = [];
+  
 
 constructor(private imageService: ImageService) {
 } 
@@ -45,7 +47,15 @@ async uploadPhotos() {
     for (let image of this.selectedImages) {
       console.log(image.name);
       this.imageService.uploadFile(image).subscribe({
-        next: (uploadResponse) => console.log("Imagen subida con éxito:", uploadResponse),
+        next: (uploadResponse) => {
+          console.log("Imagen subida con éxito:", uploadResponse);          
+          const newImage: Image = {
+            IMAGE_LINK: uploadResponse.url,
+            IMAGE_NAME: uploadResponse.name ,
+            loaded: false
+          };
+          this.imageList.push(newImage); 
+        },
         error: (uploadError) => console.error("Error al subir la imagen:", uploadError)
       });
     }

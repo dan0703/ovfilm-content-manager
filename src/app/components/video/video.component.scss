@@ -56,7 +56,16 @@ button{
     min-height: 50px;
     margin-bottom: 20px;
     margin-left: 20px;
+    cursor: pointer;
+
   }
+.delete-button{
+    background: #FF5A5F;
+    margin-left: 0px;
+    align-self: center;
+    width: 95%;
+
+}
   
 .hero-video-container {
     position: relative;
@@ -106,10 +115,7 @@ button{
     padding-top: 0px;
     padding-bottom: 0px;
 }
-.video-carousel-container section{
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
+
 .video-carousel-container{
     padding-top: 0px;
     padding-bottom: 0px;
@@ -124,22 +130,28 @@ button{
     filter: grayscale(100%);
     align-items: center;
     position: relative;
-    
 }
-
+.div-img-container{
+    display: flex;
+    flex-direction: column;
+}
 .img-container {
-    width: 300px;
-    min-width: 300px;
+   width: 100%;
     padding-top: 3%;
     aspect-ratio: 16 / 9; 
     position: relative;
-  }
-  
+}
+
   .img-container img {
     width: 95%;
     object-fit: cover; 
     position: absolute;
   }
+
+.figure-carousel-container{
+    width: 300px;
+    min-width: 300px;
+}
 .img-container:hover, .img-container.active{
     border-top: solid 3px #80B9B1;
     transition: all 0.3s ease;

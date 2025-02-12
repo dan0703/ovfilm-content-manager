@@ -3,15 +3,19 @@ import { Component, inject } from '@angular/core';
 import { BlogSummary } from '../../models/blog/blog-summary';
 import { BlogCardComponent } from "../blog-card/blog-card.component";
 import { BlogService } from '../../services/blog.service';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-blog-list',
   standalone: true,
-  imports: [CommonModule, BlogCardComponent],
+  imports: [CommonModule, BlogCardComponent, FormsModule],
   templateUrl: './blog-list.component.html',
   styleUrl: './blog-list.component.scss'
 })
 export class BlogListComponent {
+  
+
   blogList: BlogSummary[] = [];
   blogService: BlogService= inject(BlogService);
   constructor() {

@@ -5,6 +5,7 @@ import { VideoComponent } from './components/video/video.component';
 import { PhotoPageComponent } from './components/photo-page/photo-page.component';
 import { BlogListComponent } from './components/blog-list/blog-list.component';
 import { BlogDetailComponent } from './components/blog-detail/blog-detail.component';
+import { AddBlogComponent } from './components/add-blog/add-blog.component';
 
 const routeConfig: Routes = [
     {
@@ -36,6 +37,11 @@ const routeConfig: Routes = [
       path: 'blogDetail/:id',
       component: BlogDetailComponent,
       title: 'Blog Detail',
+    },
+    {
+      path: 'addBlog',
+      component: AddBlogComponent,
+      title: 'Add Blog',
     },
   ];
 

@@ -34,6 +34,10 @@ export class VideoComponent {
     return this.descriptionText.replace(/\n/g, '<br>');
   }
 
+  deleteVideo(index: number): void {
+    this.weddingReview.images.splice(index, 1);
+    this.videoList.splice(index, 1);
+  }
   onFileSelected(event: Event, imageType: string) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
@@ -49,26 +53,23 @@ export class VideoComponent {
 
   scrollCarousel(direction: number) {
     const carousel = this.carousel.nativeElement;
-    const scrollAmount = 150; // Ajusta la cantidad de desplazamiento
+    const scrollAmount = 150;
     carousel.scrollLeft += direction * scrollAmount;
   }
   extractNumbers(input: string): string {
-    const match = input.match(/\d+/g); // Extrae todos los números de la cadena
+    const match = input.match(/\d+/g); 
     console.log(match);
-    return match ? match.join('') : ''; // Une todos los números y los devuelve como string
+    return match ? match.join('') : ''; 
   }
 
   constructor(private sanitizer: DomSanitizer) {
-    //Get video list
     this.videoService.getAllVideos().then((videoList: Video[]) => {
       this.videoList = videoList;
-      // Mapear los datos al array de imágenes
       this.weddingReview.images = this.videoList.map((video) => ({
         src: video.THUMBNAIL_LINK, 
         alt: 'Wedding video thumbnail', 
         videoId: this.extractNumbers(this.extractNumbers(video.VIDEO_LINK)), 
       }));
-      console.log('Video List:', this.videoList[0]);
     });
 
     const videoId = parseInt(this.route.snapshot.params['index'], 10);
@@ -96,7 +97,6 @@ export class VideoComponent {
       console.log('Video List:', this.videoList[0]);
     });
   }
-  
 
   @Input() weddingReview: {
     images: { src: string; alt: string, videoId:string }[];

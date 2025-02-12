@@ -36,14 +36,17 @@
 
         <section class="view-videos-carousel" #carousel>
             <figure 
-              class="img-container" 
+                class="figure-carousel-container"
               *ngFor="let image of weddingReview.images; let i = index"
               [class.active]="i === activeImageIndex"
               (click)="updateVideoUrl(image.videoId, i)"> 
-              <img [src]="image.src" [alt]="image.alt" class="img-carousel">
+              <div class="img-container">
+                <img [src]="image.src" [alt]="image.alt" class="img-carousel">
+              </div>
+              <button type="submit" class="delete-button" (click)="deleteVideo(i)">Eliminar</button>
             </figure>
         </section>
-
+        
         <div class="arrow-right-container" (click)="scrollCarousel(1)">
             <div class="arrow-right">
                 <svg viewBox="0 0 146.41 37.09">
