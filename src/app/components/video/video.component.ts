@@ -5,7 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Video } from '../../models/video/video';
 import { VideoService } from '../../services/video.service';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
+import { VideoGallery } from '../../models/video/videoGallery';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-video',
@@ -15,12 +17,18 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './video.component.scss'
 })
 export class VideoComponent {
-  videoId: string = '';
+
+  videoId: String = '';
   thumbnail: String = '';
-  headerText: string = '';
+  headerText: String = '';
   descriptionText: String='';
-  imageUrl: string | ArrayBuffer | null = null;
+  imageUrl: String= "";
+  language: String = 'EN';
   videoList: Video[] = [];
+  videoGallery: VideoGallery | undefined;
+  selectedImages: File[] = []; 
+
+  
   @ViewChild('carousel') carousel!: ElementRef;
 
   videoService: VideoService= inject(VideoService);
@@ -33,36 +41,79 @@ export class VideoComponent {
   get formatteddescriptionText(): string {
     return this.descriptionText.replace(/\n/g, '<br>');
   }
-
-  deleteVideo(index: number): void {
-    this.weddingReview.images.splice(index, 1);
-    this.videoList.splice(index, 1);
+  async ngOnInit() {
+    this.loadVideoGallery(); 
   }
-  onFileSelected(event: Event, imageType: string) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (imageType === 'home') {
-          this.imageUrl = reader.result;
-        } 
-      };
-      reader.readAsDataURL(file);
+  private async loadVideoGallery() {
+    try {
+      const videoGallery = await this.videoService.getVideoGallery();
+      if (videoGallery) {
+        this.videoGallery = videoGallery;
+        this.language = videoGallery.LANGUAGE;
+        this.headerText = videoGallery.TITLE;
+        this.imageUrl = videoGallery.IMG_URL_1 || 'assets/home-photo.png';
+        this.descriptionText = videoGallery.DESCRIPTION;
+      }
+    } catch (error) {
+      console.error('Error al cargar About Us:', error);
     }
   }
+
+  deleteVideo(index: number): void {
+    const videoId = this.videoList[index]._id;
+    this.videoService.deleteVideo(videoId).then(() => {
+      this.videoList.splice(index, 1);
+      this.weddingReview.images.splice(index, 1);
+    });
+  }
+  async onFileSelected(event: any, imageType: string) {
+    if (event.target.files) {
+      this.selectedImages = Array.from(event.target.files);
+    }
+    
+    try {
+      let imageUrl = await this.uploadImage();
+      console.log('Imagen URL:', imageUrl);
+      if(imageType === 'img1') {
+        this.imageUrl = imageUrl;
+      } else {
+        console.log('Imagen no encontrada');
+      }
+    } catch (error) {
+      console.error('Error al obtener la URL de la imagen:', error);
+    }
+  }
+
+  async uploadImage(): Promise<string> {
+      console.log(this.selectedImages.length);
+      let imageUrl: string = "";
+        
+      for (let image of this.selectedImages) {
+        console.log(image.name);
+        try {
+          const uploadResponse = await lastValueFrom(this.imageService.uploadFile(image));
+          console.log("Imagen subida con éxito:", uploadResponse);
+          imageUrl = uploadResponse.url;
+        } catch (uploadError) {
+          console.error("Error al subir la imagen:", uploadError);
+          break; 
+        }
+      }
+      return imageUrl;
+    }
 
   scrollCarousel(direction: number) {
     const carousel = this.carousel.nativeElement;
     const scrollAmount = 150;
     carousel.scrollLeft += direction * scrollAmount;
   }
-  extractNumbers(input: string): string {
+  extractNumbers(input: String): String {
     const match = input.match(/\d+/g); 
     console.log(match);
     return match ? match.join('') : ''; 
   }
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor(private sanitizer: DomSanitizer, private imageService: ImageService) {
     this.videoService.getAllVideos().then((videoList: Video[]) => {
       this.videoList = videoList;
       this.weddingReview.images = this.videoList.map((video) => ({
@@ -78,14 +129,14 @@ export class VideoComponent {
     );
   }
   activeImageIndex: number | null = null;
-  updateVideoUrl(videoId: string, index: number): void {
+  updateVideoUrl(videoId: String, index: number): void {
     const baseUrl = 'https://player.vimeo.com/video/';
     const params = '?autoplay=1&loop=1&controls=1';
     this.activeImageIndex = index; 
     this.sanitizedVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${baseUrl}${videoId}${params}`);
   }
 
-  uploadVideo(videoId: string): void {
+  uploadVideo(videoId: String): void {
     this.videoService.getVideoThumbnail(this.extractNumbers(videoId)).then(({ thumbnail }) => { 
       this.thumbnail = thumbnail; 
       this.videoList.push({ VIDEO_LINK: videoId, THUMBNAIL_LINK: thumbnail });
@@ -98,8 +149,29 @@ export class VideoComponent {
     });
   }
 
+    submitVideoGallery() {
+      const videoGalleryData: VideoGallery = {
+        LANGUAGE: "EN",
+        IMG_URL_1: this.imageUrl,
+        TITLE: this.formattedheaderText,
+        DESCRIPTION: this.formatteddescriptionText
+      };
+      
+      this.videoService.addVideoGallery(videoGalleryData).then(
+        response => {
+          console.log('About us guardado con éxito', response);
+          alert('About us guardado correctamente');
+        }
+      ).catch(
+        error => {
+          console.error('Error al guardar about us', error);
+          alert('Hubo un error al guardar about us, Intenta mas tarde');
+        }
+      );
+    }      
+
   @Input() weddingReview: {
-    images: { src: string; alt: string, videoId:string }[];
+    images: { src: String; alt: String, videoId:String }[];
   } = {
     images: []
   };
