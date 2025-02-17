@@ -1,7 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { Blog } from '../../models/blog/blog';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BlogService } from '../../services/blog.service';
 import { BlogSummary } from '../../models/blog/blog-summary';
 import {RouterModule} from '@angular/router';
@@ -17,6 +17,10 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class BlogDetailComponent {
+deleteArticle() {
+  this.blogService.deleteArticle(this.blog?._id);
+  
+}
   title: string = '';
   subtitle_1: string = '';
   date: string = '';
@@ -35,7 +39,6 @@ export class BlogDetailComponent {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        //Review 1
         if (imageType === 'img1') {
           this.img_1 = reader.result as string;
         } else if (imageType === 'img2') {
@@ -71,15 +74,13 @@ export class BlogDetailComponent {
   }
 
   ngOnInit() {
-    this.loadBlog(); 
     this.route.params.subscribe(() => {
       this.loadBlog();
     });
   }
   private loadBlog() {
-    const blogId = parseInt(this.route.snapshot.params['id'], 10);
-
-    this.blogService.getBlogById(blogId).then((blog: Blog | undefined) => {
+    const blogId = this.route.snapshot.params['id'];
+    this.blogService.getArticleById(blogId).then((blog: Blog | undefined) => {
       this.blog = blog;
     });
   }

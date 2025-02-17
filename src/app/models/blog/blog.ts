@@ -11,4 +11,8 @@ export interface Blog extends BlogSummary
     alt2?: string;
     imgUrl3?: string;
     alt3?: string;
+    imgUrl: string;
+    title: string;
+    date: string;
+    _id: string;
 }

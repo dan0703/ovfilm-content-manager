@@ -1,4 +1,6 @@
 <article class="Content">
+    <button type="submit" (click)="deleteArticle()" [routerLink]="['/blog']" class="button-delete">Eliminar Articulo</button>
+
     <section>
         <h2>{{blog?.title}}</h2>
         <p class="blog-date"> {{ blog?.date }}</p>
@@ -8,7 +10,7 @@
             <h3>{{blog?.subtitle1}}</h3>
             <p [innerHTML]="blog?.content1"></p>
             <section>
-                <img [src]="blog?.imageUrl" alt="blog image" />
+                <img [src]="blog?.imgUrl" alt="blog image" />
             </section>
             <p [innerHTML]="blog?.content2"></p>
             <section *ngIf="blog?.imgUrl2" class="img2-container"> 
@@ -23,7 +25,7 @@
             <section class="recent-blogs">
                 <ul>
                     <div *ngFor="let recentBlog of blogList" class="recent-blog-card">
-                        <h2 [routerLink]="['/blogDetail', recentBlog.id]">{{recentBlog.title}}</h2>
+                        <h2 [routerLink]="['/blogDetail', recentBlog._id]">{{recentBlog.title}}</h2>
                         <p>{{recentBlog.date}}</p>
                         <hr class="separator">
                     </div>

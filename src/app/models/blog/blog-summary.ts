@@ -3,7 +3,8 @@ export interface BlogSummary {
     title: string;
     description: string;
     date: string;
-    imageUrl: string;
+    imgUrl: string;
     alt1?: string;
+    _id: string;
   }
   

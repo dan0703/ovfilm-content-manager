@@ -7,7 +7,6 @@ import { BlogSummary } from '../../models/blog/blog-summary';
 import {RouterModule} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-
 @Component({
   selector: 'app-add-blog',
   standalone: true,
@@ -17,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class AddBlogComponent {
+
   title: string = '';
   subtitle_1: string = '';
   date: string = '';
@@ -58,40 +58,42 @@ export class AddBlogComponent {
     }
   }
 
-
-  // route: ActivatedRoute = inject(ActivatedRoute);
-  // blogService = inject(BlogService);
   blog: Blog | undefined;
   blogList: BlogSummary[] = [];
-  // constructor() {
-  //   const blogId = parseInt(this.route.snapshot.params['id'], 10);
-  //   this.blogService.getBlogById(blogId).then((blog: Blog | undefined) => {
-  //     this.blog = blog;
-  //   });
-  //   this.blogService.getAllBlogs().then((blogList: BlogSummary[]) => {
-  //     this.blogList = blogList;
-  //     console.log('Blog List:', this.blogList[0]);
-  //   });
-  // }
+
 
   constructor(private route: ActivatedRoute, private blogService: BlogService) {
-    // this.blogService.getAllBlogs().then((blogList: BlogSummary[]) => {
-    //   this.blogList = blogList;
-    // });
+
   }
 
-  // ngOnInit() {
-  //   this.loadBlog(); 
-  //   this.route.params.subscribe(() => {
-  //     this.loadBlog();
-  //   });
-  // }
-  // private loadBlog() {
-  //   const blogId = parseInt(this.route.snapshot.params['id'], 10);
+  submitArticle() {
+    const articleData: Blog = {
+      title: this.title,
+      date: this.date,
+      subtitle1: this.subtitle_1,
+      content1: this.content_1,
+      subtitle2: this.subtitle_2,
+      content2: this.content_2,
+      content3: this.content_3,
+      imgUrl: this.img_1,
+      imgUrl2: this.img_2,
+      imgUrl3: this.img_3,
+      _id: '',
+      id: 0,
+      description: ''
+    };
 
-  //   this.blogService.getBlogById(blogId).then((blog: Blog | undefined) => {
-  //     this.blog = blog;
-  //   });
-  // }
+    this.blogService.addArticle(articleData).then(
+      response => {
+        console.log('Artículo guardado con éxito', response);
+        alert('Artículo guardado correctamente');
+      }
+    ).catch(
+      error => {
+        console.error('Error al guardar el artículo', error);
+        alert('Hubo un error al guardar el artículo');
+      }
+    );
+  }
 
 }
