@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { CarouselComponent } from "../carousel/carousel.component";
 import { Image } from '../../models/image/image';
-
+import { ImageService } from '../../services/image.service';
 @Component({
   selector: 'app-photo-gallery',
   standalone: true,
@@ -17,24 +17,27 @@ export class PhotoGalleryComponent {
   images: { url: string, loaded: boolean }[] = [];
   currentIndex: number = 0;
   @Input() imageList: Image[] = []; 
-  // async ngOnInit() {
-  //   await this.loadImages();
-  // }
-
-  async loadImages() {
-    const apiUrl = 'http://garmannetworks.online:781/imagelist';
-    try {
-      const response = await fetch(apiUrl);
-      this.imageList = await response.json();
-      this.images = this.imageList.map((img: Image) => ({
-        url: img.IMAGE_LINK,
-        loaded: false
-    }));
-
-    } catch (error) {
-      console.error('Error loading images:', error);
-    }
+  async ngOnInit() {
+    await this.loadImages();
   }
+  constructor(private imageService: ImageService) {
+  }
+  loadImages() {
+    this.imageService.getImages().subscribe({
+      next: (data: Image[]) => {
+        this.imageList = data;
+        this.images = this.imageList.map((img: Image) => ({
+          url: img.IMAGE_LINK,
+          loaded: false
+        }));
+      },
+      error: (error) => {
+        console.error('Error loading images:', error);
+      }
+    });
+  }
+
+
   imageLoaded(index: number) {
     this.imageList[index].loaded = true;  
   }

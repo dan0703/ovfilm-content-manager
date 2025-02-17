@@ -17,9 +17,9 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class BlogDetailComponent {
+
 deleteArticle() {
   this.blogService.deleteArticle(this.blog?._id);
-  
 }
   title: string = '';
   subtitle_1: string = '';
@@ -51,21 +51,8 @@ deleteArticle() {
     }
   }
 
-
-  // route: ActivatedRoute = inject(ActivatedRoute);
-  // blogService = inject(BlogService);
   blog: Blog | undefined;
   blogList: BlogSummary[] = [];
-  // constructor() {
-  //   const blogId = parseInt(this.route.snapshot.params['id'], 10);
-  //   this.blogService.getBlogById(blogId).then((blog: Blog | undefined) => {
-  //     this.blog = blog;
-  //   });
-  //   this.blogService.getAllBlogs().then((blogList: BlogSummary[]) => {
-  //     this.blogList = blogList;
-  //     console.log('Blog List:', this.blogList[0]);
-  //   });
-  // }
 
   constructor(private route: ActivatedRoute, private blogService: BlogService) {
     this.blogService.getAllBlogs().then((blogList: BlogSummary[]) => {

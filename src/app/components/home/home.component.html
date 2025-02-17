@@ -1,9 +1,10 @@
 <article>
     <div class = "content">
+        <button (click)="submitAboutUs()">Guardar</button>
         <section class="experience-section">
             <div class="contact-us">
-                <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'home')">
-                <img class="img-experience" [src]="imageUrl || 'assets/home-photo.png'" alt="Couple hugging face to face">
+                <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img1')">
+                <img class="img-experience" [src]="img1" alt="Couple hugging face to face">
             </div>
             <div class="label-experience">
                 <input type="text" [(ngModel)]="headerText" placeholder="Ingresa el encabezado" class="h2">
@@ -13,8 +14,8 @@
         <section class="about-us-section">
             <div class="about-us">
                 <div class="contact-us">
-                    <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'about1')">
-                    <img class="img-experience" [src]="aboutImage1" alt="Bride and groom smiling with the photographer">
+                    <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img2')">
+                    <img class="img-experience" [src]="img2" alt="Bride and groom smiling with the photographer">
                 </div>
                 <div class="label-about-us">
                     <textarea [(ngModel)]="aboutTitle1" class="p" placeholder="Escribe aquí..."></textarea>
@@ -24,8 +25,8 @@
                     <div [innerHTML]="formattedAboutText"></div>
                 </div>  
                 <div class="contact-us">
-                    <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'about2')">
-                    <img class="img-experience" [src]="aboutImage2" alt="Bride and groom with the photography team smiling together">
+                    <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img3')">
+                    <img class="img-experience" [src]="img3" alt="Bride and groom with the photography team smiling together">
                 </div>
     
             </div>

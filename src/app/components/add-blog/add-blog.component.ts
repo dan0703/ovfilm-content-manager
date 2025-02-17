@@ -6,6 +6,9 @@ import { BlogService } from '../../services/blog.service';
 import { BlogSummary } from '../../models/blog/blog-summary';
 import {RouterModule} from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ImageService } from '../../services/image.service';
+import { Image } from '../../models/image/image';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-add-blog',
@@ -24,10 +27,47 @@ export class AddBlogComponent {
   content_1: string = '';
   content_2: string = '';
   content_3: string = '';
+  selectedImages: File[] = []; 
+  description: string = '';
   img_1: string = 'assets/w1-highlight-1.png';
   img_2: string = 'assets/w1-highlight-2.png';
   img_3: string = 'assets/w1-highlight-3.png';
 
+  constructor(private route: ActivatedRoute, private blogService: BlogService, private imageService: ImageService) {
+    
+  }
+  async ngOnInit() {
+    await this.logIn();
+    
+  }
+  async logIn() {
+    this.imageService.login('ovfilm@gmail.com', 'OV2025').subscribe({
+      next: (response) => {
+        console.log("Inicio de sesión exitoso:", response);
+      },
+      error: (error) => {
+        console.error("Error al iniciar sesión:", error);
+      }
+    });
+  }
+
+  async uploadImage(): Promise<string> {
+    console.log(this.selectedImages.length);
+    let imageUrl: string = "";
+    
+    for (let image of this.selectedImages) {
+      console.log(image.name);
+      try {
+        const uploadResponse = await lastValueFrom(this.imageService.uploadFile(image));
+        console.log("Imagen subida con éxito:", uploadResponse);
+        imageUrl = uploadResponse.url;
+      } catch (uploadError) {
+        console.error("Error al subir la imagen:", uploadError);
+        break; 
+      }
+    }
+    return imageUrl;
+  }
 
   get formattedContentText_1(): string {
     return this.content_1.replace(/\n/g, '<br>');
@@ -39,32 +79,32 @@ export class AddBlogComponent {
   get formattedContentText_3(): string {
     return this.content_3.replace(/\n/g, '<br>');
   }
-  onFileSelected(event: Event, imageType: string) {
-    const file = (event.target as HTMLInputElement).files?.[0];
 
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        //Review 1
-        if (imageType === 'img1') {
-          this.img_1 = reader.result as string;
-        } else if (imageType === 'img2') {
-          this.img_2 = reader.result as string;
-        } else if (imageType === 'img3') {
-          this.img_3 = reader.result as string;
-        }
-      };
-      reader.readAsDataURL(file);
+
+  async onFileSelected(event: any, imageType: string) {
+    if (event.target.files) {
+      this.selectedImages = Array.from(event.target.files);
+    }
+    
+    try {
+      let imageUrl = await this.uploadImage();
+      console.log('Imagen URL:', imageUrl);
+      if(imageType === 'img1') {
+        this.img_1 = imageUrl;
+      } else if(imageType === 'img2') {
+        this.img_2 = imageUrl;
+      } else if(imageType === 'img3') {
+        this.img_3 = imageUrl;
+      } else {
+        console.log('Imagen no encontrada');
+      }
+    } catch (error) {
+      console.error('Error al obtener la URL de la imagen:', error);
     }
   }
 
   blog: Blog | undefined;
   blogList: BlogSummary[] = [];
-
-
-  constructor(private route: ActivatedRoute, private blogService: BlogService) {
-
-  }
 
   submitArticle() {
     const articleData: Blog = {
@@ -75,25 +115,21 @@ export class AddBlogComponent {
       subtitle2: this.subtitle_2,
       content2: this.content_2,
       content3: this.content_3,
-      imgUrl: "this.img_1",
-      imgUrl2: "this.img_2",
-      imgUrl3: "this.img_3",
-      _id: '',
+      imgUrl: this.img_1,
+      imgUrl2: this.img_2,
+      imgUrl3: this.img_3,
       id: 0,
-      description: ''
+      description: this.description
     };
-
+    
     this.blogService.addArticle(articleData).then(
       response => {
-        console.log('Artículo guardado con éxito', response);
         alert('Artículo guardado correctamente');
       }
     ).catch(
       error => {
-        console.error('Error al guardar el artículo', error);
-        alert('Hubo un error al guardar el artículo');
+        alert('Hubo un error al guardar el artículo, Intenta con otro titulo');
       }
     );
   }
-
 }

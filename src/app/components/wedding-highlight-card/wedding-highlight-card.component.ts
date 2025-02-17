@@ -13,11 +13,11 @@ import { FormsModule } from '@angular/forms';
 })
 export class WeddingHighlightCardComponent {
   @Input() weddingReview: {
-    name: string;
-    date: string;
-    reviewText: string;
-    videoId: string;
-    images: { src: string; alt: string }[];
+    name: String;
+    date: String;
+    reviewText: String;
+    videoId: String;
+    images: { src: String; alt: String }[];
   } = {
     name: '',
     date: '',
@@ -26,7 +26,7 @@ export class WeddingHighlightCardComponent {
     images: []
   };
   @Input() reverseOrder: boolean = false;
-  get formattedCommentReviewText(): string {
+  get formattedCommentReviewText(): String {
     return this.weddingReview.reviewText.replace(/\n/g, '<br>');
   }
 }

@@ -5,6 +5,6 @@ export interface BlogSummary {
     date: string;
     imgUrl: string;
     alt1?: string;
-    _id: string;
+    _id?: string;
   }
   

@@ -1,7 +1,6 @@
 <article class="Content">
     <button (click)="submitArticle()">Guardar Artículo</button>
-
-    <div class="review-form">
+    <div class="addBlog-form">
         <div >
             <input type="text" [(ngModel)]="title" placeholder="Titulo del Articulo" class="h2">
             <input type="text" [(ngModel)]="date" placeholder="Fecha del articulo" class="h2">
@@ -19,7 +18,8 @@
             <textarea [(ngModel)]="content_3" class="p" placeholder="Contenido 3..."></textarea>
         </div>
     </div>
-    
+    <textarea [(ngModel)]="description" class="p" placeholder="Descripción del Articulo..."></textarea>
+
     <section>
         <h2>{{title}}</h2>
         <p class="blog-date"> {{ date }}</p>

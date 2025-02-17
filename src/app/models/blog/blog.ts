@@ -14,5 +14,5 @@ export interface Blog extends BlogSummary
     imgUrl: string;
     title: string;
     date: string;
-    _id: string;
+    _id?: string;
 }

@@ -1,8 +1,11 @@
 <article>
     <div class="content">
+        <section>
+            <button (click)="submitVideoGallery()">Guardar</button>
+        </section>
         <section class="hero-section">
             <div class="contact-us">
-                <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'home')">
+                <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img1')">
                 <img class="img-experience" [src]="imageUrl || 'assets/home-photo.png'" alt="Couple hugging face to face">
             </div>
             <div class="label-experience">

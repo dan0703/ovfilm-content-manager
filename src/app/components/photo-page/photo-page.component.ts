@@ -22,11 +22,12 @@ export class PhotoPageComponent {
 
 constructor(private imageService: ImageService) {
 } 
+
 async ngOnInit() {
-  await this.uploadPhotos();
+  await this.logIn();
 }
 
-async uploadPhotos() {
+async logIn() {
     this.imageService.login('ovfilm@gmail.com', 'OV2025').subscribe({
       next: (response) => {
         console.log("Inicio de sesión exitoso:", response);
@@ -43,6 +44,12 @@ async uploadPhotos() {
       return;
     }
     console.log(this.selectedImages.length);
+    this.imageService.deleteAllImages().subscribe({
+      next: (deleteResponse) => {
+        console.log("Imágenes eliminadas con éxito:", deleteResponse);
+      },
+      error: (deleteError) => console.error("Error al eliminar las imágenes:", deleteError)
+    });
 
     for (let image of this.selectedImages) {
       console.log(image.name);
@@ -54,30 +61,20 @@ async uploadPhotos() {
             IMAGE_NAME: uploadResponse.name ,
             loaded: false
           };
+
           this.imageList.push(newImage); 
         },
         error: (uploadError) => console.error("Error al subir la imagen:", uploadError)
       });
     }
   }
-  // onMultipleFilesSelected(event: any) {
-  //   if (event.target.files) {
-  //       for (let file of event.target.files) {
-  //           const reader = new FileReader();
-  //           reader.onload = (e: any) => {
-  //               this.selectedImages.push(e.target.result);
-  //           };
-  //           reader.readAsDataURL(file);
-  //       }
-  //   }
-  // }
+
   onMultipleFilesSelected(event: any) {
     if (event.target.files) {
       this.selectedImages = Array.from(event.target.files);
       console.log('Archivos seleccionados:', this.selectedImages);
     }
   }
-  
 
 removeImage(index: number) {
   this.selectedImages.splice(index, 1);
