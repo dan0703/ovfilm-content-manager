@@ -14,23 +14,33 @@ export class BlogService {
 
 
       
-  async addArticle(article: Blog): Promise<void> {
-    try{
-      const response = await fetch(`${this.url}/admin/article`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(article),});
-      if (!response.ok) {
-        throw new Error(`Failed to add article: ${response.status} ${response.statusText}`);
-      }else{
-        console.log('Article added successfully');
+    async addArticle(article: Blog): Promise<any> {
+      try {
+        console.log('Enviando artículo:', article);
+    
+        const response = await fetch(`${this.url}/admin/article`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(article),
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.json(); // Intenta obtener detalles del error
+          throw new Error(`Error ${response.status}: ${errorData.error || response.statusText}`);
+        }
+    
+        const data = await response.json();
+        console.log('Artículo agregado con éxito:', data);
+        return data; // Devuelve la respuesta para su uso posterior
+    
+      } catch (error) {
+        console.error('Error al agregar el artículo:', error);
+        throw error; // Relanza el error para manejarlo en el componente
       }
-    }catch (error) {
-      console.error('Error al agregar el artículo:', error);
     }
-  }
+    
 
     async getAllBlogs(): Promise<BlogSummary[]> {
       try {
