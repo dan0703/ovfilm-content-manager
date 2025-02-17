@@ -75,9 +75,9 @@ export class AddBlogComponent {
       subtitle2: this.subtitle_2,
       content2: this.content_2,
       content3: this.content_3,
-      imgUrl: this.img_1,
-      imgUrl2: this.img_2,
-      imgUrl3: this.img_3,
+      imgUrl: "this.img_1",
+      imgUrl2: "this.img_2",
+      imgUrl3: "this.img_3",
       _id: '',
       id: 0,
       description: ''
