@@ -38,7 +38,9 @@ export class ImageService {
     });
   }
 
+
+
   deleteAllImages(): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/admin/deleteAllImages`);
+    return this.http.delete(`${this.apiUrl}/admin/AllImages`);
   }
 }

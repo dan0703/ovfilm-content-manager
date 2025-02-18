@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,16 +10,18 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class NavbarComponent {
   isMenuOpen = false;
+  currentLang = 'en'; 
 
-  toggleMenu(){
+  toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  // constructor(private translate: TranslateService) {
-  //   this.translate.setDefaultLang('en');
-  // }
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
-  // switchLanguage(language: string) {
-  //   this.translate.use(language); 
-  // }
+  switchLanguage(language: string) {
+    this.currentLang = language;
+    const currentUrl = this.router.url.split('/').slice(2).join('/'); 
+    this.router.navigate([`/${language}/${currentUrl}`]); 
+
+  }
 }

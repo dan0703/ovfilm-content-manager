@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ContactService } from '../../services/contact.service';
 import { ServiceRequest } from '../../models/service-request/service-request';
 import { FormsModule } from '@angular/forms';
+import { ContactUs } from '../../models/contactUs/contactUs';
 
 @Component({
   selector: 'app-contact-form',
@@ -14,6 +15,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './contact-form.component.scss'
 })
 export class ContactFormComponent {
+
   route: ActivatedRoute = inject(ActivatedRoute);
   contactService = inject(ContactService);
   serviceRequest: ServiceRequest | undefined;
@@ -32,12 +34,26 @@ export class ContactFormComponent {
     location: new FormControl('', [Validators.required, Validators.minLength(2)]),
     hfind: new FormControl(''),
   });
-  
+  async ngOnInit() {
+    this.loadContactUs(); 
+  }
   constructor() {
     this.serviceRequest 
   };
   submitAttempted = false;
   submitRequestSuccessfully = false;
+
+  private async loadContactUs() {
+    try {
+      const contactUs = await this.contactService.getContactUs();
+      if (contactUs) {
+        this.headerText = contactUs.TITLE;
+        this.descriptionText = contactUs.DESCRIPTION;
+      }
+    } catch (error) {
+      console.error('Error al cargar About Us:', error);
+    }
+  }
 submitApplication() {
   this.submitAttempted = true;
   if (this.applyForm.valid) {
@@ -59,6 +75,25 @@ submitApplication() {
   }
 }
 
+  submitContactUs() {
+    const contactUs: ContactUs = {
+      LANGUAGE: "EN",
+      TITLE: this.headerText,
+      DESCRIPTION: this.descriptionText,
+    };
+    
+    this.contactService.addContactUs(contactUs).then(
+      response => {
+        console.log('contactUs guardado con éxito', response);
+        alert('contactUs guardado correctamente');
+      }
+    ).catch(
+      error => {
+        console.error('Error al guardar ', error);
+        alert('Hubo un error al guardar, Intenta mas tarde');
+      }
+    );
+  }
 
   days: number[] = Array.from({ length: 31 }, (_, i) => i + 1);
   months = [
@@ -80,4 +115,3 @@ submitApplication() {
     return this.descriptionText.replace(/\n/g, '<br>');
   }
 }
-

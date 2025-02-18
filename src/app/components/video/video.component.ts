@@ -140,12 +140,14 @@ export class VideoComponent {
     this.videoService.getVideoThumbnail(this.extractNumbers(videoId)).then(({ thumbnail }) => { 
       this.thumbnail = thumbnail; 
       this.videoList.push({ VIDEO_LINK: videoId, THUMBNAIL_LINK: thumbnail });
-      this.weddingReview.images = this.videoList.map((video) => ({
-        src: video.THUMBNAIL_LINK, 
-        alt: 'Wedding video thumbnail', 
-        videoId: this.extractNumbers(video.VIDEO_LINK), 
-      }));
-      console.log('Video List:', this.videoList[0]);
+      this.videoService.addVideo({ VIDEO_LINK: videoId, THUMBNAIL_LINK: thumbnail }).then(() => {
+        this.weddingReview.images = this.videoList.map((video) => ({
+          src: video.THUMBNAIL_LINK, 
+          alt: 'Wedding video thumbnail', 
+          videoId: this.extractNumbers(video.VIDEO_LINK), 
+        }));
+        console.log('Video List:', this.videoList[0]);
+      });
     });
   }
 

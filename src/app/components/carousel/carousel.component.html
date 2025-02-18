@@ -13,9 +13,7 @@
         (load)="onImageLoad(currentIndex)" 
         *ngIf="images[currentIndex]?.url" 
       >
-      <div class="loading" *ngIf="!images[currentIndex]?.loaded">
-        Loadding...
-      </div>
+
       <div class="indicators">
         <div 
           *ngFor="let image of images; let i = index" 

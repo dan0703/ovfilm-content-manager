@@ -8,41 +8,14 @@ import { BlogDetailComponent } from './components/blog-detail/blog-detail.compon
 import { AddBlogComponent } from './components/add-blog/add-blog.component';
 
 const routeConfig: Routes = [
-    {
-      path: '',
-      component: HomeComponent,
-      title: 'Home page',
-    },
-    {
-      path: 'contact',
-      component: ContactFormComponent,
-      title: 'Contact form',
-    },
-    {
-        path: 'video/:index',
-        component: VideoComponent,
-        title: 'Video',
-    },
-    {
-        path: 'photo',
-        component: PhotoPageComponent,
-        title: 'Gallery',
-    },
-    {
-      path: 'blog',
-      component: BlogListComponent,
-      title: 'Blog',
-    },
-    {
-      path: 'blogDetail/:id',
-      component: BlogDetailComponent,
-      title: 'Blog Detail',
-    },
-    {
-      path: 'addBlog',
-      component: AddBlogComponent,
-      title: 'Add Blog',
-    },
-  ];
+  { path: ':lang', component: HomeComponent, title: 'Home page' },
+  { path: ':lang/contact', component: ContactFormComponent, title: 'Contact form' },
+  { path: ':lang/video/:index', component: VideoComponent, title: 'Video' },
+  { path: ':lang/photo', component: PhotoPageComponent, title: 'Gallery' },
+  { path: ':lang/blog', component: BlogListComponent, title: 'Blog' },
+  { path: ':lang/blogDetail/:id', component: BlogDetailComponent, title: 'Blog Detail' },
+  { path: ':lang/addBlog', component: AddBlogComponent, title: 'Add Blog' },
+  { path: '', redirectTo: 'es', pathMatch: 'full' } 
+];
 
 export default routeConfig;

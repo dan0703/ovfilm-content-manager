@@ -1,16 +1,11 @@
 <article>
+  <button (click)="submitContactUs()">Guardar</button>
   <div class="content">
       <section class="contact-us">
         <input type="text" [(ngModel)]="headerText" placeholder="Ingresa el encabezado" class="h2">
         <h2>{{ headerText }}</h2>
         <textarea [(ngModel)]="descriptionText" class="p" placeholder="Escribe aquí..."></textarea>
         <div [innerHTML]="formattedDescriptionText"></div>
-        <p>
-          We would love to hear from you! If you have any questions about our services or would like more information, please feel free to fill out our contact form. We are here to help you immortalize those magical moments that surround your love story.
-        </p>
-        <p>
-          We believe it’s super important for you to connect with your team before your big day! Having that chemistry helps you feel comfortable and relaxed around us. So, we’d love to invite you to a video call where we can chat about your needs and what you envision for your special day!
-        </p>
       </section>
       <section class="application-form">
         <form [formGroup]="applyForm" (submit)="submitApplication()">

@@ -37,6 +37,7 @@ export class VideoService {
     
       } catch (error) {
         console.error('Error al agregar videoGallery:', error);
+        console.log('Error al agregar videoGallery:', error);
         throw error;
       }
     }

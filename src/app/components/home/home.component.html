@@ -1,6 +1,12 @@
 <article>
     <div class = "content">
         <button (click)="submitAboutUs()">Guardar</button>
+        <select id="language" (change)="onLanguageChange($event)" [(ngModel)]="language">
+            <option value="EN">English</option>
+            <option value="ES">Español</option>
+          </select>
+          
+          
         <section class="experience-section">
             <div class="contact-us">
                 <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img1')">

@@ -5,6 +5,7 @@ import { ImageService } from '../../services/image.service';
 import { lastValueFrom } from 'rxjs';
 import { AboutUs } from '../../models/aboutUs/aboutUs';
 import { HomeService } from '../../services/home.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,10 @@ import { HomeService } from '../../services/home.service';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+onLanguageChange($event: Event) {
+  const selectedLanguage = (event?.target as HTMLSelectElement).value;
+  console.log('Idioma seleccionado:', selectedLanguage);
+}
 
   headerText: String = '';
   img1: String = 'assets/home-photo.png';
@@ -22,21 +27,28 @@ export class HomeComponent {
   reviewsTitle: String = 'Reviews'
   img2: String = 'assets/about-us1.png';
   img3: String = 'assets/about-us2.png';
+  language: String = 'ES';
   selectedImages: File[] = []; 
-
-  constructor(private imageService: ImageService, private homeService: HomeService) {}
+  currentLang = '';
+  constructor(private imageService: ImageService, private homeService: HomeService, private route: ActivatedRoute, private router: Router) {}
   async ngOnInit() {
     await this.logIn();
-    this.loadAboutUs(); 
+    this.route.paramMap.subscribe(params => {
+      const lang = params.get('lang');
+      if (lang === 'en' || lang === 'es') {
+        this.currentLang = lang;
+        this.loadAboutUs(this.currentLang); 
+      }
+    });
+
   }
   aboutUs: AboutUs | undefined;
 
-  private async loadAboutUs() {
+  private async loadAboutUs(currentLang: string) {
     try {
-      const aboutUs = await this.homeService.getAboutUs();
+      const aboutUs = await this.homeService.getAboutUs(currentLang);
       if (aboutUs) {
         this.aboutUs = aboutUs;
-        
         this.headerText = aboutUs.HEADER;
         this.img1 = aboutUs.IMG_URL_1 || 'assets/home-photo.png';
         this.img2 = aboutUs.IMG_URL_2 || 'assets/about-us1.png';
@@ -109,7 +121,7 @@ export class HomeComponent {
   }
   submitAboutUs() {
       const aboutUsData: AboutUs = {
-        LANGUAGE: "EN",
+        LANGUAGE: this.language,
         IMG_URL_1: this.img1,
         IMG_URL_2: this.img2,
         IMG_URL_3: this.img3,

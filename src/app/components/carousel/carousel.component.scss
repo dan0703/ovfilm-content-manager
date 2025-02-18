@@ -1,9 +1,11 @@
 .carousel {
   display: grid;
   height: 75vh;
+  max-height: 75vh;
   width: 84vw;
+  max-width: 84vw;
   max-width: 100%;
-  grid-template-columns: 10% 80% 10%;
+  grid-template-columns: 5% 90% 5%;
   align-items: center;
 }
 
@@ -33,14 +35,17 @@
   margin-left: 5%;
   background: transparent;
   flex-direction: column;
+  
 }
 .image-container img {
-  max-width: 100%; 
-  max-height: 100%; 
-  object-fit: contain; 
+  width: auto;  /* Mantiene el aspecto original */
+  height: 70vh; /* Fija la altura para todas las imágenes */
+  max-height: 70vh; /* Evita que crezcan demasiado */
+  object-fit: contain; /* Mantiene la proporción sin recortar */
   transition: opacity 0.3s ease-in-out;
   background: black;
 }
+
 
 .indicators {
   display: flex;

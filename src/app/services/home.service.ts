@@ -39,24 +39,20 @@ export class HomeService {
     }
     
 
-  async getAboutUs(): Promise<AboutUs | undefined>  {
+  async getAboutUs(currentLang: String): Promise<AboutUs | undefined>  {
     try {
-      const response = await fetch(`${this.url}/aboutUs`);
-  
+      const response = await fetch(`${this.url}/aboutUs?LANGUAGE=${currentLang}`);
       if (!response.ok) {
         throw new Error(`Failed to fetch about us: ${response.status} ${response.statusText}`);
       }
       const data: AboutUs = await response.json();
-  
+      console.log('About us fetched successfully:', data);
       return data;
     } catch (error) {
       console.error('Failed to fetch about us:', error);
       return undefined; 
     }
   }
-  
-
-    
     submitApplication(firstName: string, lastName: string, email: string) {
         console.log(
           `Homes application received: firstName: ${firstName}, lastName: ${lastName}, email: ${email}.`,

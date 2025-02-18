@@ -1,14 +1,15 @@
 <article>
     <div class = "content">
+        <button (click)="submitPhotoGallery()">Guardar</button>
         <section class="hero-section">
             <div class="contact-us">
-                <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'home')">
+                <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img1')">
                 <img class="img-experience" [src]="imageUrl || 'assets/photo-page.jpg'" alt="Couple hugging face to face">
             </div>
             <div class="label-experience">
                 <textarea [(ngModel)]="headerText" class="p" placeholder="Escribe aquí el titulo..."></textarea>
                 <textarea [(ngModel)]="descriptionText" class="p" placeholder="Escribe aquí el contenido..."></textarea>
-                <h2><div [innerHTML]="formattedAboutTitle1" class="h2"> </div></h2>
+                <h2><div [innerHTML]="formattedHeaderText" class="h2"> </div></h2>
                 <div [innerHTML]="formatteddescriptionText"></div>
             </div>
         </section>
