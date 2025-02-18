@@ -1,28 +1,11 @@
-# Etapa de construcción
-FROM node:lts-bullseye AS build
+FROM nginx:alpine
 
-WORKDIR /app
-COPY . .
+# Copia la configuración personalizada
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Instalar dependencias y compilar Angular SSR
-RUN npm ci
-RUN npm run build
+# Copia los archivos de Angular
+COPY dist/ovfilm-landing/browser /usr/share/nginx/html
 
-# Etapa de producción
-FROM node:lts-bullseye AS production
-
-WORKDIR /app
-
-# Copiar solo las dependencias necesarias para producción
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
-
-# Copiar los archivos de la etapa de build
-COPY --from=build /app/dist/ovfilm-landing/browser /app/browser
-COPY --from=build /app/dist/ovfilm-landing/server /app/server
-
-# Exponer el puerto del servidor SSR
 EXPOSE 4200
 
-# Ejecutar el servidor Angular SSR
-CMD ["node", "server/server.mjs"]
+CMD ["nginx", "-g", "daemon off;"]

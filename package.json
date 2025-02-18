@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:ovfilm-landing": "node dist/ovfilm-landing/server/server.mjs"
+    "serve:ssr:ovfilm-landing": "node dist/ovfilm-landing/server/server.mjs",
+    "start": "http-server ./dist/ovfilm-content-manager -p 4200 -c-1 --proxy http://localhost:4200?"
+
   },
   "private": true,
   "dependencies": {
