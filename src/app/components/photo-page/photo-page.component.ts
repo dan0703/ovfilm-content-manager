@@ -7,6 +7,7 @@ import { Image } from '../../models/image/image';
 import { PhotoGallery } from '../../models/photoGallery/photoGallery';
 import { PhotoGalleryService } from '../../services/photoGallery.service';
 import { lastValueFrom } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-photo-page',
@@ -25,20 +26,26 @@ photoGallery: PhotoGallery | undefined;
   selectedImages: File[] = []; 
   imageList: Image[] = [];
   language: String = 'EN';
+  currentLang = '';
   
 
-constructor(private imageService: ImageService, private photoGalleryService: PhotoGalleryService) {
+constructor(private imageService: ImageService, private photoGalleryService: PhotoGalleryService, private route: ActivatedRoute, private router: Router) {
 } 
 
 async ngOnInit() {
   await this.logIn();
-  this.loadPhotoGallery(); 
-
+  this.route.paramMap.subscribe(params => {
+    const lang = params.get('lang');
+    if (lang === 'EN' || lang === 'ES') {
+      this.currentLang = lang;
+      this.loadPhotoGallery(this.currentLang); 
+    }
+  });
 }
 
-private async loadPhotoGallery() {
+private async loadPhotoGallery(currentLang: string) {
   try {
-    const photoGallery = await this.photoGalleryService.getPhotoGallery();
+    const photoGallery = await this.photoGalleryService.getPhotoGallery(currentLang);
     if (photoGallery) {
       console.log('photoGallery:', photoGallery);
       this.photoGallery = photoGallery;
@@ -158,7 +165,7 @@ removeImage(index: number) {
 
   submitPhotoGallery() {
     const photoGalleryData: PhotoGallery = {
-      LANGUAGE: "EN",
+      LANGUAGE: this.currentLang,
       IMG_URL_1: this.imageUrl,
       TITLE: this.formattedHeaderText,
       DESCRIPTION: this.formatteddescriptionText

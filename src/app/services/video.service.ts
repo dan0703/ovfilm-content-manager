@@ -85,9 +85,9 @@ export class VideoService {
       }
     }  
 
-  async getVideoGallery(): Promise<VideoGallery | undefined>  {
+  async getVideoGallery(currentLang: String): Promise<VideoGallery | undefined>  {
     try {
-      const response = await fetch(`${this.url}/videoGallery`);
+      const response = await fetch(`${this.url}/videoGallery?LANGUAGE=${currentLang}`);
   
       if (!response.ok) {
         throw new Error(`Failed to fetch videoGallery: ${response.status} ${response.statusText}`);

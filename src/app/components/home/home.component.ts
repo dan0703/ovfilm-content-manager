@@ -35,7 +35,7 @@ onLanguageChange($event: Event) {
     await this.logIn();
     this.route.paramMap.subscribe(params => {
       const lang = params.get('lang');
-      if (lang === 'en' || lang === 'es') {
+      if (lang === 'EN' || lang === 'ES') {
         this.currentLang = lang;
         this.loadAboutUs(this.currentLang); 
       }
@@ -121,7 +121,7 @@ onLanguageChange($event: Event) {
   }
   submitAboutUs() {
       const aboutUsData: AboutUs = {
-        LANGUAGE: this.language,
+        LANGUAGE: this.currentLang,
         IMG_URL_1: this.img1,
         IMG_URL_2: this.img2,
         IMG_URL_3: this.img3,

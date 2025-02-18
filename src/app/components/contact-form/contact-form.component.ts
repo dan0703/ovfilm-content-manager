@@ -21,6 +21,7 @@ export class ContactFormComponent {
   serviceRequest: ServiceRequest | undefined;
   headerText: String = "";
   descriptionText: String="";
+  currentLang = '';
   
   applyForm = new FormGroup({
     firstName: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -35,7 +36,13 @@ export class ContactFormComponent {
     hfind: new FormControl(''),
   });
   async ngOnInit() {
-    this.loadContactUs(); 
+    this.route.paramMap.subscribe(params => {
+      const lang = params.get('lang');
+      if (lang === 'EN' || lang === 'ES') {
+        this.currentLang = lang;
+        this.loadContactUs(this.currentLang); 
+      }
+    });
   }
   constructor() {
     this.serviceRequest 
@@ -43,9 +50,9 @@ export class ContactFormComponent {
   submitAttempted = false;
   submitRequestSuccessfully = false;
 
-  private async loadContactUs() {
+  private async loadContactUs(currentLang: String) {
     try {
-      const contactUs = await this.contactService.getContactUs();
+      const contactUs = await this.contactService.getContactUs(currentLang);
       if (contactUs) {
         this.headerText = contactUs.TITLE;
         this.descriptionText = contactUs.DESCRIPTION;
@@ -77,7 +84,7 @@ submitApplication() {
 
   submitContactUs() {
     const contactUs: ContactUs = {
-      LANGUAGE: "EN",
+      LANGUAGE: this.currentLang,
       TITLE: this.headerText,
       DESCRIPTION: this.descriptionText,
     };

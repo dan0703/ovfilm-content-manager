@@ -61,9 +61,9 @@ export class ContactService {
     }
   }
 
-  async getContactUs(): Promise<ContactUs | undefined>  {
+  async getContactUs(currentLang : String): Promise<ContactUs | undefined>  {
     try {
-      const response = await fetch(`${this.url}/contactus`);
+      const response = await fetch(`${this.url}/contactus?LANGUAGE=${currentLang}`);
   
       if (!response.ok) {
         throw new Error(`Failed to fetch about us: ${response.status} ${response.statusText}`);

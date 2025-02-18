@@ -34,6 +34,7 @@ export class VideoComponent {
   videoService: VideoService= inject(VideoService);
   route: ActivatedRoute = inject(ActivatedRoute);
   sanitizedVideoUrl: SafeResourceUrl;
+  currentLang = '';
 
   get formattedheaderText(): string {
     return this.headerText.replace(/\n/g, '<br>');
@@ -42,11 +43,17 @@ export class VideoComponent {
     return this.descriptionText.replace(/\n/g, '<br>');
   }
   async ngOnInit() {
-    this.loadVideoGallery(); 
+    this.route.paramMap.subscribe(params => {
+      const lang = params.get('lang');
+      if (lang === 'EN' || lang === 'ES') {
+        this.currentLang = lang;
+        this.loadVideoGallery(this.currentLang); 
+      }
+    });
   }
-  private async loadVideoGallery() {
+  private async loadVideoGallery(currentLang: string) {
     try {
-      const videoGallery = await this.videoService.getVideoGallery();
+      const videoGallery = await this.videoService.getVideoGallery(currentLang);
       if (videoGallery) {
         this.videoGallery = videoGallery;
         this.language = videoGallery.LANGUAGE;
@@ -153,7 +160,7 @@ export class VideoComponent {
 
     submitVideoGallery() {
       const videoGalleryData: VideoGallery = {
-        LANGUAGE: "EN",
+        LANGUAGE: this.currentLang,
         IMG_URL_1: this.imageUrl,
         TITLE: this.formattedheaderText,
         DESCRIPTION: this.formatteddescriptionText

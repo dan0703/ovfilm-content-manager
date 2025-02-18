@@ -15,7 +15,7 @@ const routeConfig: Routes = [
   { path: ':lang/blog', component: BlogListComponent, title: 'Blog' },
   { path: ':lang/blogDetail/:id', component: BlogDetailComponent, title: 'Blog Detail' },
   { path: ':lang/addBlog', component: AddBlogComponent, title: 'Add Blog' },
-  { path: '', redirectTo: 'es', pathMatch: 'full' } 
+  { path: '', redirectTo: 'ES', pathMatch: 'full' } 
 ];
 
 export default routeConfig;

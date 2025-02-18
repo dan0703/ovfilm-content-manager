@@ -10,7 +10,7 @@ import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
 })
 export class NavbarComponent {
   isMenuOpen = false;
-  currentLang = 'en'; 
+  currentLang = 'EN'; 
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;

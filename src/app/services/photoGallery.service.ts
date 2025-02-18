@@ -70,9 +70,9 @@ export class PhotoGalleryService {
     }
     
 
-  async getPhotoGallery(): Promise<PhotoGallery | undefined>  {
+  async getPhotoGallery(currentLang? : String): Promise<PhotoGallery | undefined>  {
     try {
-      const response = await fetch(`${this.url}/photoGallery`);
+      const response = await fetch(`${this.url}/photoGallery?LANGUAGE=${currentLang}`);
   
       if (!response.ok) {
         throw new Error(`Failed to fetch photoGallery: ${response.status} ${response.statusText}`);
