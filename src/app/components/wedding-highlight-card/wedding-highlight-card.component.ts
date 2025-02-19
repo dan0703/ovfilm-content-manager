@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 
@@ -28,5 +28,16 @@ export class WeddingHighlightCardComponent {
   @Input() reverseOrder: boolean = false;
   get formattedCommentReviewText(): String {
     return this.weddingReview.reviewText.replace(/\n/g, '<br>');
+  }
+  constructor(private route: ActivatedRoute, private router: Router) {}
+  currentLang = '';
+
+  async ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const lang = params.get('lang');
+      if (lang === 'EN' || lang === 'ES') {
+        this.currentLang = lang;
+      }
+    });
   }
 }

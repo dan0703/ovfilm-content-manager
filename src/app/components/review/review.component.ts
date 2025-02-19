@@ -187,8 +187,8 @@ export class ReviewComponent {
       }
     ).catch(
       error => {
-        console.error('Error al guardar Review 1', error);
-        alert('Hubo un error al guardar Review 1, Intenta mas tarde');
+        console.error('Error al guardar Review ', error);
+        alert('Hubo un error al guardar Review , Intenta mas tarde');
       }
     );
   }     

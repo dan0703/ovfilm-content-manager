@@ -157,27 +157,28 @@ export class VideoComponent {
       });
     });
   }
-
-    submitVideoGallery() {
-      const videoGalleryData: VideoGallery = {
-        LANGUAGE: this.currentLang,
-        IMG_URL_1: this.imageUrl,
-        TITLE: this.formattedheaderText,
-        DESCRIPTION: this.formatteddescriptionText
-      };
-      
-      this.videoService.addVideoGallery(videoGalleryData).then(
-        response => {
-          console.log('About us guardado con éxito', response);
-          alert('About us guardado correctamente');
-        }
-      ).catch(
-        error => {
-          console.error('Error al guardar about us', error);
-          alert('Hubo un error al guardar about us, Intenta mas tarde');
-        }
-      );
-    }      
+  
+  submitVideoGallery() {
+    const videoGalleryData: VideoGallery = {
+      LANGUAGE: this.currentLang,
+      IMG_URL_1: this.imageUrl,
+      TITLE: this.formattedheaderText,
+      DESCRIPTION: this.formatteddescriptionText
+    };
+    
+    this.videoService.addVideoGallery(videoGalleryData).then(
+      response => {
+        console.log('About us guardado con éxito', response);
+        alert('About us guardado correctamente');
+      }
+    ).catch(
+      error => {
+        console.error('Error al guardar about us', error);
+        alert('Hubo un error al guardar about us, Intenta mas tarde');
+      }
+    );
+  }  
+        
 
   @Input() weddingReview: {
     images: { src: String; alt: String, videoId:String }[];

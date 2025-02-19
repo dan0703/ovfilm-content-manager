@@ -4,7 +4,7 @@ import { BlogSummary } from '../../models/blog/blog-summary';
 import { BlogCardComponent } from "../blog-card/blog-card.component";
 import { BlogService } from '../../services/blog.service';
 import { FormsModule } from '@angular/forms';
-import {RouterModule} from '@angular/router';
+import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-blog-list',
@@ -21,11 +21,20 @@ addBlog() {
 
   blogList: BlogSummary[] = [];
   blogService: BlogService= inject(BlogService);
-  constructor() {
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.blogService.getAllBlogs().then((blogList: BlogSummary[]) => {
       this.blogList = blogList;
       console.log(this.blogList);
 
+    });
+  }
+  currentLang = '';
+  async ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      const lang = params.get('lang');
+      if (lang === 'EN' || lang === 'ES') {
+        this.currentLang = lang;
+      }
     });
   }
 }

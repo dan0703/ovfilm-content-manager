@@ -11,9 +11,8 @@
             <figure class="img-container" *ngFor="let image of weddingReview.images">
                 <img [src]="image.src" [alt]="image.alt">
             </figure>
-            
             <div class="view-wedding-label-container">
-                <a [routerLink]="['/video',weddingReview.videoId]">
+                <a [routerLink]="['/', currentLang, 'video',weddingReview.videoId]">
                     <h2 class="view-wedding-label">
                         <p>View</p>
                         <p>Wedding</p>
@@ -32,7 +31,7 @@
         </ng-container>
         <ng-template #reversedTemplate>
             <div class="view-wedding-label-container" [ngClass]= "{'reversed': reverseOrder}">
-                <a [routerLink]="['/video', weddingReview.videoId]">
+                <a [routerLink]="['/', currentLang, 'video',weddingReview.videoId]">
                     <h2 class="view-wedding-label" [ngClass]= "{'reversed': reverseOrder}">
                         <p [ngClass]= "{'reversed': reverseOrder}">View</p>
                         <p [ngClass]= "{'reversed': reverseOrder}">Wedding</p>
