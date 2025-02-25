@@ -7,7 +7,6 @@ import { BlogSummary } from '../../models/blog/blog-summary';
 import {RouterModule} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ImageService } from '../../services/image.service';
-import { Image } from '../../models/image/image';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
