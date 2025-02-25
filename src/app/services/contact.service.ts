@@ -23,7 +23,7 @@ export class ContactService {
       
       `, 
     };
-        return this.http.post('http://localhost:3000/send-email', requestBody).subscribe(
+        return this.http.post('http://garmannetworks.online:781/send-email', requestBody).subscribe(
       (response) => {
         console.log('Correo enviado con éxito:', response);
       },
