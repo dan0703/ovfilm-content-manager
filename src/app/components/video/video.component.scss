@@ -59,13 +59,7 @@ button{
     cursor: pointer;
 
   }
-.delete-button{
-    background: #FF5A5F;
-    margin-left: 0px;
-    align-self: center;
-    width: 95%;
 
-}
   
 .hero-video-container {
     position: relative;
@@ -104,6 +98,7 @@ button{
     }
   }
 
+
   .view-videos-carousel{
     display: flex;
     overflow-x: auto;
@@ -114,6 +109,13 @@ button{
 .view-videos-carousel section{
     padding-top: 0px;
     padding-bottom: 0px;
+}
+.view-videos-carousel{
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    width: 100%;
+    padding: 10px;
 }
 
 .video-carousel-container{
@@ -131,46 +133,48 @@ button{
     align-items: center;
     position: relative;
 }
+
 .div-img-container{
     display: flex;
     flex-direction: column;
 }
+.view-videos-carousel {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+}
+
 .img-container {
-   width: 100%;
+    min-width: 300px;
+    max-width: 300px;
     padding-top: 3%;
     aspect-ratio: 16 / 9; 
     position: relative;
-}
-
-  .img-container img {
-    width: 95%;
+  }
+  .img-carousel{
+    height: 70%;
+  }
+  .img-containers img {
+    width: 100%;
+    height: 127px;
     object-fit: cover; 
     position: absolute;
   }
 
-.figure-carousel-container{
-    width: 300px;
-    min-width: 300px;
-}
-.img-container:hover, .img-container.active{
+  .img-container:hover, .img-container.active {
     border-top: solid 3px #80B9B1;
     transition: all 0.3s ease;
     cursor: pointer;
-    &:hover img {
-        transition: all 0.3s ease;
-        box-shadow: 15px 14px 16px rgba(0, 0, 0, 0.5); 
-        filter: grayscale(0%);
-        z-index: 100;
-    }
 }
-  
-  .img-container.active img {
+
+.img-container:hover img, .img-container.active img {
     transition: all 0.3s ease;
     box-shadow: 15px 14px 16px rgba(0, 0, 0, 0.5); 
     filter: grayscale(0%);
     z-index: 100;
-  }
+}
 
+  
 .arrow-right-container{
     display: flex;
     justify-content: flex-end;
@@ -179,12 +183,11 @@ button{
 
 }
 
-
 .arrow-left-container{
     cursor: pointer;
 }
 
-//
+
 .arrow-left-container, .arrow-right-container {
     cursor: pointer;
     padding: 10px;
@@ -196,5 +199,13 @@ button{
     stroke: black;
     stroke-width: 2px;
     transition: all 0.3s ease;
+
+}
+
+.delete-button{
+    background: #FF5A5F;
+    margin-left: 0px;
+    align-self: center;
+    width: 100%;
 
 }

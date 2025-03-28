@@ -4,5 +4,6 @@ export interface VideoGallery
     IMG_URL_1: String, 
     TITLE: String,
     DESCRIPTION: String,
+    VIDEO_LINK: String,
 }
 

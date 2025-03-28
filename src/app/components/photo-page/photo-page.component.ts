@@ -27,7 +27,6 @@ photoGallery: PhotoGallery | undefined;
   imageList: Image[] = [];
   language: String = 'EN';
   currentLang = '';
-  
 
 constructor(private imageService: ImageService, private photoGalleryService: PhotoGalleryService, private route: ActivatedRoute, private router: Router) {
 } 

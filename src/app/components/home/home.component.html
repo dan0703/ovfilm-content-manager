@@ -1,15 +1,19 @@
 <article>
     <div class = "content">
         <button (click)="submitAboutUs()">Guardar</button>
+
+
         <section class="experience-section">
             <div class="contact-us">
                 <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img1')">
                 <img class="img-experience" [src]="img1" alt="Couple hugging face to face">
+
             </div>
             <div class="label-experience">
                 <input type="text" [(ngModel)]="headerText" placeholder="Ingresa el encabezado" class="h2">
                 <h2>{{ headerText }}</h2>
             </div>
+
         </section>
         <section class="about-us-section">
             <div class="about-us">

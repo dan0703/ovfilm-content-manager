@@ -7,11 +7,11 @@ import { ContactUs } from '../models/contactUs/contactUs';
   providedIn: 'root'
 })
 export class ContactService {
-  async submitRequest(serviceRequest:ServiceRequest) {
+  async submitRequest(serviceRequest:ServiceRequest, currentLang: String) {
     const requestBody = {
       to: serviceRequest.email,
       clientName: `${serviceRequest.firstName} ${serviceRequest.lastName}`,
-      language: 'es',
+      language: currentLang === "ES" ? "es" : "en", 
       text: `
       Event Date: ${serviceRequest.day}/${serviceRequest.month}/${serviceRequest.year}
       Location: ${location}

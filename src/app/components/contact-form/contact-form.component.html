@@ -10,25 +10,25 @@
       <section class="application-form">
         <form [formGroup]="applyForm" (submit)="submitApplication()">
 
-          <label for="first-name">Complete Name’s*</label>
+          <label for="first-name">{{name}}*</label>
           <div class="inputNameGroup">
-            <input id="first-name" type="text" formControlName="firstName" placeholder="First name..." />
-            <input id="last-name" type="text" formControlName="lastName" placeholder="Last name..." />
+            <input id="first-name" type="text" formControlName="firstName" placeholder="{{firstName}}..." />
+            <input id="last-name" type="text" formControlName="lastName" placeholder="{{lastName}}..." />
             <div *ngIf="applyForm.controls.firstName?.touched && applyForm.controls.firstName?.invalid">
               <small *ngIf="applyForm.controls.firstName.errors?.['required']">Name is required</small>
               <small *ngIf="applyForm.controls.firstName.errors?.['minlength']">Must be at least 2 characters</small>
             </div>
           </div>    
 
-          <label for="email">Email*</label>
+          <label for="email">{{email}}*</label>
           <input id="email" type="email" formControlName="email" placeholder="janedoe@gmail.com..." />
           <div *ngIf="applyForm.controls.email?.touched && applyForm.controls.email?.invalid">
             <small *ngIf="applyForm.controls.email.errors?.['required']">Email is required</small>
             <small *ngIf="applyForm.controls.email.errors?.['email']">Enter a valid email</small>
           </div>
 
-          <label for="phone">Phone Number*</label>
-          <input id="phone" type="tel" formControlName="phone" placeholder="  Phone">
+          <label for="phone">{{phone}}*</label>
+          <input id="phone" type="tel" formControlName="phone" placeholder="  998...">
           <div *ngIf="applyForm.controls.phone?.touched && applyForm.controls.phone?.invalid">
             <small *ngIf="applyForm.controls.phone.errors?.['required']">Phone is required</small>
             <small *ngIf="applyForm.controls.phone.errors?.['pattern']">Enter a valid phone number</small>
@@ -40,29 +40,29 @@
               <input id="month" type="text" formControlName="month" placeholder="  Month">
               <input id="year" type="text" formControlName="year" placeholder="  Year">
           </div> -->
-          <label for="event-date">Date of the Event*</label>
+          <label for="event-date">{{dayOfEvent}}*</label>
           <div class="dateInputGroup">
             <select id="day" formControlName="day">
-              <option value="" disabled selected>Day</option>
+              <option value="" disabled selected>{{day}}</option>
               <option *ngFor="let d of days" [value]="d">{{ d }}</option>
             </select>
             <select id="month" formControlName="month">
-              <option value="" disabled selected>Month</option>
+              <option value="" disabled selected>{{month}}</option>
               <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
             </select>
             <select id="year" formControlName="year">
-              <option value="" disabled selected>Year</option>
+              <option value="" disabled selected>{{year}}</option>
               <option *ngFor="let y of years" [value]="y">{{ y }}</option>
             </select>
           </div>
 
-          <label for="location">Location*</label>
+          <label for="location">{{location}}*</label>
           <input id="location" type="text" formControlName="location" placeholder="  Tulum...">
           <div *ngIf="applyForm.controls.location?.touched && applyForm.controls.location?.invalid">
             <small *ngIf="applyForm.controls.location.errors?.['required']">Location is required</small>
           </div>
 
-          <label for="doubts">When and How did you Get Engaged?*</label>
+          <label for="doubts">{{whenAndHow}}*</label>
           <!-- <div *ngIf="applyForm.controls.doubts?.touched && applyForm.controls.doubts?.invalid">
             <small *ngIf="applyForm.controls.doubts.errors?.['required']">T is required</small>
             <small *ngIf="applyForm.controls.doubts.errors?.['pattern']">Enter a valid phone number</small>
@@ -74,7 +74,7 @@
               placeholder="Last year on a romatic trip..."
            ></textarea>
 
-          <label for="hfind-us">How did you Find Out About Us?*</label>
+          <label for="hfind-us">{{howDidYouFindUs}}*</label>
           <input id="hfind" type="text" formControlName="hfind" placeholder="  Facebook...">
           <button type="submit" [disabled]="applyForm.invalid">SEND</button>
           <small *ngIf="submitAttempted && applyForm.invalid " style="color: red;">

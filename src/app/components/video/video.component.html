@@ -16,6 +16,8 @@
             </div>
         </section>
     </div>
+    <input type="text" [(ngModel)]="videoLink" placeholder="https://vimeo.com/1021831845" class="h2">
+    <button type="submit" (click)="uploadMainVideo(videoLink)">Ver</button>
 
     <div class="hero-video-container">
         <iframe 

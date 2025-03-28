@@ -1,0 +1,8 @@
+<input type="file" (change)="loadImage($event)">
+<canvas #canvas 
+  (mousedown)="startDragging($event)" 
+  (mousemove)="dragFrame($event)" 
+  (mouseup)="stopDragging()" 
+  (wheel)="zoomFrame($event)">
+</canvas>
+<button (click)="cropImage()">Recortar</button>

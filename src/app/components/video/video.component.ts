@@ -5,9 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Video } from '../../models/video/video';
 import { VideoService } from '../../services/video.service';
 import { FormsModule } from '@angular/forms';
-import { lastValueFrom } from 'rxjs';
 import { VideoGallery } from '../../models/video/videoGallery';
 import { ImageService } from '../../services/image.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-video',
@@ -19,6 +19,7 @@ import { ImageService } from '../../services/image.service';
 export class VideoComponent {
 
   videoId: String = '';
+  videoLink: String = '994284832';
   thumbnail: String = '';
   headerText: String = '';
   descriptionText: String='';
@@ -60,19 +61,15 @@ export class VideoComponent {
         this.headerText = videoGallery.TITLE;
         this.imageUrl = videoGallery.IMG_URL_1 || 'assets/home-photo.png';
         this.descriptionText = videoGallery.DESCRIPTION;
+        this.videoId = this.extractNumbers(videoGallery.VIDEO_LINK) 
+        this.videoLink = videoGallery.VIDEO_LINK;
+        this.updateVideoUrl(this.videoId, 0);
       }
     } catch (error) {
       console.error('Error al cargar About Us:', error);
     }
   }
 
-  deleteVideo(index: number): void {
-    const videoId = this.videoList[index]._id;
-    this.videoService.deleteVideo(videoId).then(() => {
-      this.videoList.splice(index, 1);
-      this.weddingReview.images.splice(index, 1);
-    });
-  }
   async onFileSelected(event: any, imageType: string) {
     if (event.target.files) {
       this.selectedImages = Array.from(event.target.files);
@@ -90,30 +87,37 @@ export class VideoComponent {
       console.error('Error al obtener la URL de la imagen:', error);
     }
   }
-
   async uploadImage(): Promise<string> {
-      console.log(this.selectedImages.length);
-      let imageUrl: string = "";
-        
-      for (let image of this.selectedImages) {
-        console.log(image.name);
-        try {
-          const uploadResponse = await lastValueFrom(this.imageService.uploadFile(image));
-          console.log("Imagen subida con éxito:", uploadResponse);
-          imageUrl = uploadResponse.url;
-        } catch (uploadError) {
-          console.error("Error al subir la imagen:", uploadError);
-          break; 
-        }
+    console.log(this.selectedImages.length);
+    let imageUrl: string = "";
+      
+    for (let image of this.selectedImages) {
+      console.log(image.name);
+      try {
+        const uploadResponse = await lastValueFrom(this.imageService.uploadFile(image));
+        console.log("Imagen subida con éxito:", uploadResponse);
+        imageUrl = uploadResponse.url;
+      } catch (uploadError) {
+        console.error("Error al subir la imagen:", uploadError);
+        break; 
       }
-      return imageUrl;
     }
+    return imageUrl;
+  }
+  deleteVideo(index: number): void {
+    const videoId = this.videoList[index]._id;
+    this.videoService.deleteVideo(videoId).then(() => {
+      this.videoList.splice(index, 1);
+      this.weddingReview.images.splice(index, 1);
+    });
+  }
 
   scrollCarousel(direction: number) {
     const carousel = this.carousel.nativeElement;
     const scrollAmount = 150;
     carousel.scrollLeft += direction * scrollAmount;
   }
+
   extractNumbers(input: String): String {
     const match = input.match(/\d+/g); 
     console.log(match);
@@ -121,26 +125,32 @@ export class VideoComponent {
   }
 
   constructor(private sanitizer: DomSanitizer, private imageService: ImageService) {
+    
     this.videoService.getAllVideos().then((videoList: Video[]) => {
       this.videoList = videoList;
       this.weddingReview.images = this.videoList.map((video) => ({
         src: video.THUMBNAIL_LINK, 
         alt: 'Wedding video thumbnail', 
-        videoId: this.extractNumbers(this.extractNumbers(video.VIDEO_LINK)), 
+        videoId: this.extractNumbers(video.VIDEO_LINK), 
       }));
     });
-
-    const videoId = parseInt(this.route.snapshot.params['index'], 10);
+    
     this.sanitizedVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://player.vimeo.com/video/${videoId}?autoplay=1&loop=1&controls=1`
+      `https://player.vimeo.com/video/${this.videoId}?autoplay=1&loop=1&controls=1`
     );
   }
   activeImageIndex: number | null = null;
+
   updateVideoUrl(videoId: String, index: number): void {
     const baseUrl = 'https://player.vimeo.com/video/';
     const params = '?autoplay=1&loop=1&controls=1';
     this.activeImageIndex = index; 
     this.sanitizedVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${baseUrl}${videoId}${params}`);
+  }
+
+  uploadMainVideo(videoLink: String): void {
+    this.videoLink = videoLink;
+      this.updateVideoUrl(this.extractNumbers(this.videoLink), 0);
   }
 
   uploadVideo(videoId: String): void {
@@ -163,7 +173,8 @@ export class VideoComponent {
       LANGUAGE: this.currentLang,
       IMG_URL_1: this.imageUrl,
       TITLE: this.formattedheaderText,
-      DESCRIPTION: this.formatteddescriptionText
+      DESCRIPTION: this.formatteddescriptionText,
+      VIDEO_LINK: this.videoLink,
     };
     
     this.videoService.addVideoGallery(videoGalleryData).then(

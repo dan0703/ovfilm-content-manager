@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ReviewComponent } from "../review/review.component";
 import { FormsModule } from '@angular/forms';
 import { ImageService } from '../../services/image.service';
@@ -6,6 +6,7 @@ import { lastValueFrom } from 'rxjs';
 import { AboutUs } from '../../models/aboutUs/aboutUs';
 import { HomeService } from '../../services/home.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-home',
@@ -21,16 +22,18 @@ onLanguageChange($event: Event) {
 }
 
   headerText: String = '';
-  img1: String = 'assets/home-photo.png';
+  img1: String = '';
   aboutTitle1: String = '';
   aboutText: String = ``;
   reviewsTitle: String = 'Reviews'
-  img2: String = 'assets/about-us1.png';
-  img3: String = 'assets/about-us2.png';
+  img2: String = '';
+  img3: String = '';
   language: String = 'ES';
   selectedImages: File[] = []; 
   currentLang = '';
+
   constructor(private imageService: ImageService, private homeService: HomeService, private route: ActivatedRoute, private router: Router) {}
+  
   async ngOnInit() {
     await this.logIn();
     this.route.paramMap.subscribe(params => {
@@ -42,6 +45,7 @@ onLanguageChange($event: Event) {
     });
 
   }
+
   aboutUs: AboutUs | undefined;
 
   private async loadAboutUs(currentLang: string) {
@@ -50,9 +54,9 @@ onLanguageChange($event: Event) {
       if (aboutUs) {
         this.aboutUs = aboutUs;
         this.headerText = aboutUs.HEADER;
-        this.img1 = aboutUs.IMG_URL_1 || 'assets/home-photo.png';
-        this.img2 = aboutUs.IMG_URL_2 || 'assets/about-us1.png';
-        this.img3 = aboutUs.IMG_URL_3 || 'assets/about-us2.png';
+        this.img1 = aboutUs.IMG_URL_1 ;
+        this.img2 = aboutUs.IMG_URL_2 ;
+        this.img3 = aboutUs.IMG_URL_3 ;
         this.aboutTitle1 = aboutUs.TITLE;
         this.aboutText = aboutUs.DESCRIPTION;
       }
@@ -60,7 +64,6 @@ onLanguageChange($event: Event) {
       console.error('Error al cargar About Us:', error);
     }
   }
-  
 
   async logIn() {
     this.imageService.login('ovfilm@gmail.com', 'OV2025').subscribe({

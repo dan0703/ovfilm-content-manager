@@ -21,6 +21,18 @@ export class ContactFormComponent {
   serviceRequest: ServiceRequest | undefined;
   headerText: String = "";
   descriptionText: String="";
+  name: String = "";
+  firstName: String = "";
+  lastName: String = "";
+  email: String = "";
+  phone: String = "";
+  dayOfEvent: String = "";
+  day: String = "";
+  month: String = "";
+  year: String = "";
+  location: String = "";
+  whenAndHow: String = "";
+  howDidYouFindUs: String = "";
   currentLang = '';
   
   applyForm = new FormGroup({
@@ -41,6 +53,19 @@ export class ContactFormComponent {
       if (lang === 'EN' || lang === 'ES') {
         this.currentLang = lang;
         this.loadContactUs(this.currentLang); 
+        this.name = lang === "ES" ? "Nombre Completo" : "Complete Name’s";
+        this.firstName = lang === "ES" ? "Nombre(s)" : "First Name";
+        this.lastName = lang === "ES" ? "Apellidos" : "Last Name";
+        this.email = lang === "ES" ? "Correo Electrónico" : "Email";
+        this.phone = lang === "ES" ? "Teléfono" : "Telephone";
+        this.dayOfEvent = lang === "ES" ? "Fecha del event" : "Date of the event";
+        this.day = lang === "ES" ? "Día" : "Day";
+        this.month = lang === "ES" ? "Mes" : "Month";
+        this.year = lang === "ES" ? "Año" : "Year";
+        this.location = lang === "ES" ? "¿Dónde te vas a casar?" : "Where are you getting married?";
+        this.whenAndHow = lang === "ES" ? "¿Cuándo y cómo se comprometieron en matrimonio?" : "When and how did you get engaged?";
+        this.howDidYouFindUs = lang === "ES" ? "¿Cómo nos encontraste?" : "How did you find us?";
+
       }
     });
   }
@@ -56,6 +81,7 @@ export class ContactFormComponent {
       if (contactUs) {
         this.headerText = contactUs.TITLE;
         this.descriptionText = contactUs.DESCRIPTION;
+        
       }
     } catch (error) {
       console.error('Error al cargar About Us:', error);
@@ -76,7 +102,7 @@ submitApplication() {
       location: this.applyForm.value.location ?? '',
       hfind: this.applyForm.value.hfind ?? '',
     };
-    this.contactService.submitRequest(serviceRequest);
+    this.contactService.submitRequest(serviceRequest, this.currentLang);
     this.applyForm.reset();
     this.submitRequestSuccessfully = true;
   }
@@ -87,6 +113,7 @@ submitApplication() {
       LANGUAGE: this.currentLang,
       TITLE: this.headerText,
       DESCRIPTION: this.descriptionText,
+      
     };
     
     this.contactService.addContactUs(contactUs).then(
