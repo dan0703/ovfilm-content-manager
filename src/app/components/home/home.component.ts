@@ -1,8 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ReviewComponent } from "../review/review.component";
 import { FormsModule } from '@angular/forms';
-import { ImageService } from '../../services/image.service';
-import { lastValueFrom } from 'rxjs';
 import { AboutUs } from '../../models/aboutUs/aboutUs';
 import { HomeService } from '../../services/home.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,21 +27,22 @@ onLanguageChange($event: Event) {
   img2: String = '';
   img3: String = '';
   language: String = 'ES';
-  selectedImages: File[] = []; 
   currentLang = '';
 
-  constructor(private imageService: ImageService, private homeService: HomeService, private route: ActivatedRoute, private router: Router) {}
-  
+  imgFile1: File | null = null;
+  imgFile2: File | null = null;
+  imgFile3: File | null = null;
+
+  constructor(private homeService: HomeService, private route: ActivatedRoute, private router: Router) {}
+
   async ngOnInit() {
-    await this.logIn();
     this.route.paramMap.subscribe(params => {
       const lang = params.get('lang');
       if (lang === 'EN' || lang === 'ES') {
         this.currentLang = lang;
-        this.loadAboutUs(this.currentLang); 
+        this.loadAboutUs(this.currentLang);
       }
     });
-
   }
 
   aboutUs: AboutUs | undefined;
@@ -65,54 +64,21 @@ onLanguageChange($event: Event) {
     }
   }
 
-  async logIn() {
-    this.imageService.login('ovfilm@gmail.com', 'OV2025').subscribe({
-      next: (response) => {
-        console.log("Inicio de sesión exitoso:", response);
-      },
-      error: (error) => {
-        console.error("Error al iniciar sesión:", error);
-      }
-    });
-  }
-  async onFileSelected(event: any, imageType: string) {
-    if (event.target.files) {
-      this.selectedImages = Array.from(event.target.files);
+  onFileSelected(event: any, imageType: string) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (imageType === 'img1') {
+      this.imgFile1 = file;
+      this.img1 = URL.createObjectURL(file) as any;
+    } else if (imageType === 'img2') {
+      this.imgFile2 = file;
+      this.img2 = URL.createObjectURL(file) as any;
+    } else if (imageType === 'img3') {
+      this.imgFile3 = file;
+      this.img3 = URL.createObjectURL(file) as any;
+    } else {
+      console.log('Imagen no encontrada');
     }
-    
-    try {
-      let imageUrl = await this.uploadImage();
-      console.log('Imagen URL:', imageUrl);
-      if(imageType === 'img1') {
-        this.img1 = imageUrl;
-      } else if(imageType === 'img2') {
-        this.img2 = imageUrl;
-      } else if(imageType === 'img3') {
-        this.img3 = imageUrl;
-      } else {
-        console.log('Imagen no encontrada');
-      }
-    } catch (error) {
-      console.error('Error al obtener la URL de la imagen:', error);
-    }
-  }
-
-  async uploadImage(): Promise<string> {
-    console.log(this.selectedImages.length);
-    let imageUrl: string = "";
-      
-    for (let image of this.selectedImages) {
-      console.log(image.name);
-      try {
-        const uploadResponse = await lastValueFrom(this.imageService.uploadFile(image));
-        console.log("Imagen subida con éxito:", uploadResponse);
-        imageUrl = uploadResponse.url;
-      } catch (uploadError) {
-        console.error("Error al subir la imagen:", uploadError);
-        break; 
-      }
-    }
-    return imageUrl;
   }
 
   get formattedAboutText(): string {
@@ -123,17 +89,16 @@ onLanguageChange($event: Event) {
     return this.aboutTitle1.replace(/\n/g, '<br>');
   }
   submitAboutUs() {
-      const aboutUsData: AboutUs = {
-        LANGUAGE: this.currentLang,
-        IMG_URL_1: this.img1,
-        IMG_URL_2: this.img2,
-        IMG_URL_3: this.img3,
-        HEADER: this.headerText,
-        TITLE: this.formattedAboutTitle1,
-        DESCRIPTION: this.formattedAboutText
-      };
-      
-      this.homeService.addAboutUs(aboutUsData).then(
+      const formData = new FormData();
+      formData.append('LANGUAGE', this.currentLang as string);
+      formData.append('HEADER', this.headerText as string);
+      formData.append('TITLE', this.formattedAboutTitle1 as string);
+      formData.append('DESCRIPTION', this.formattedAboutText as string);
+      if (this.imgFile1) formData.append('IMG_URL_1', this.imgFile1);
+      if (this.imgFile2) formData.append('IMG_URL_2', this.imgFile2);
+      if (this.imgFile3) formData.append('IMG_URL_3', this.imgFile3);
+
+      this.homeService.addAboutUs(formData).then(
         response => {
           console.log('About us guardado con éxito', response);
           alert('About us guardado correctamente');

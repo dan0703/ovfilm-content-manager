@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { WeddingHighlightCardComponent } from '../wedding-highlight-card/wedding-highlight-card.component';
 import { FormsModule } from '@angular/forms';
-import { lastValueFrom } from 'rxjs';
 import { ReviewService } from '../../services/review.service';
-import { ImageService } from '../../services/image.service';
 import { Review } from '../../models/review/review';
 
 @Component({
@@ -16,12 +14,11 @@ import { Review } from '../../models/review/review';
 export class ReviewComponent {
 
   extractNumbers(input: String): String {
-    const match = input.match(/\d+/g); 
-    return match ? match.join('') : ''; 
+    const match = input.match(/\d+/g);
+    return match ? match.join('') : '';
   }
-  selectedImages: File[] = []; 
   reviews: Review[] = [];
-  constructor(private imageService: ImageService, private reviewService: ReviewService) {}
+  constructor(private reviewService: ReviewService) {}
 
   //Review 1
   coupleNames1: String = '';
@@ -49,9 +46,20 @@ export class ReviewComponent {
   review3_Img1: String = 'assets/w1-highlight-1.png';
   review3_Img2: String = 'assets/w1-highlight-2.png';
   review3_Img3: String = 'assets/w1-highlight-3.png';
-  
+
+  // File holders for all 9 images
+  review1File1: File | null = null;
+  review1File2: File | null = null;
+  review1File3: File | null = null;
+  review2File1: File | null = null;
+  review2File2: File | null = null;
+  review2File3: File | null = null;
+  review3File1: File | null = null;
+  review3File2: File | null = null;
+  review3File3: File | null = null;
+
   async ngOnInit() {
-    this.loadReviews(); 
+    this.loadReviews();
   }
 
     private async loadReviews() {
@@ -89,97 +97,81 @@ export class ReviewComponent {
       }
     }
 
-  async uploadImage(): Promise<string> {
-    let imageUrl: string = "";
-      
-    for (let image of this.selectedImages) {
-      try {
-        const uploadResponse = await lastValueFrom(this.imageService.uploadFile(image));
-        console.log("Imagen subida con éxito:", uploadResponse);
-        imageUrl = uploadResponse.url;
-      } catch (uploadError) {
-        console.error("Error al subir la imagen:", uploadError);
-        break; 
-      }
+  onFileSelected(event: any, imageType: string) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    //Review 1
+    if (imageType === 'img1') {
+      this.review1File1 = file;
+      this.review1_Img1 = URL.createObjectURL(file) as any;
+    } else if (imageType === 'img2') {
+      this.review1File2 = file;
+      this.review1_Img2 = URL.createObjectURL(file) as any;
+    } else if (imageType === 'img3') {
+      this.review1File3 = file;
+      this.review1_Img3 = URL.createObjectURL(file) as any;
     }
-    return imageUrl;
-  }
-    
-  async onFileSelected(event: any, imageType: string) {
-    if (event.target.files) {
-      this.selectedImages = Array.from(event.target.files);
+    //Review 2
+    else if (imageType === 'img4') {
+      this.review2File1 = file;
+      this.review2_Img1 = URL.createObjectURL(file) as any;
+    } else if (imageType === 'img5') {
+      this.review2File2 = file;
+      this.review2_Img2 = URL.createObjectURL(file) as any;
+    } else if (imageType === 'img6') {
+      this.review2File3 = file;
+      this.review2_Img3 = URL.createObjectURL(file) as any;
     }
-    
-    try {
-      let imageUrl = await this.uploadImage();
-      //Review 1
-      if(imageType === 'img1') {
-        this.review1_Img1 = imageUrl;
-      } else if(imageType === 'img2') {
-        this.review1_Img2 = imageUrl;
-      } else if(imageType === 'img3') {
-        this.review1_Img3 = imageUrl;
-      }
-      //Review 2
-      else if(imageType === 'img4') {
-        this.review2_Img1 = imageUrl;
-      } else if(imageType === 'img5') {
-        this.review2_Img2 = imageUrl;
-      } else if(imageType === 'img6') {
-        this.review2_Img3 = imageUrl;
-      } 
-      //Review 3
-      else if(imageType === 'img7') {
-        this.review3_Img1 = imageUrl;
-      } else if(imageType === 'img8') {
-        this.review3_Img2 = imageUrl;
-      } else if(imageType === 'img9') {
-        this.review3_Img3 = imageUrl;
-      } 
-      else {
-        console.log('Imagen no encontrada');
-      }
-    } catch (error) {
-      console.error('Error al obtener la URL de la imagen:', error);
+    //Review 3
+    else if (imageType === 'img7') {
+      this.review3File1 = file;
+      this.review3_Img1 = URL.createObjectURL(file) as any;
+    } else if (imageType === 'img8') {
+      this.review3File2 = file;
+      this.review3_Img2 = URL.createObjectURL(file) as any;
+    } else if (imageType === 'img9') {
+      this.review3File3 = file;
+      this.review3_Img3 = URL.createObjectURL(file) as any;
+    }
+    else {
+      console.log('Imagen no encontrada');
     }
   }
 
   submitReviews() {
-    const review1: Review = {
-      LANGUAGE: "EN",
-      IMG_URL_1: this.review1_Img1,
-      IMG_URL_2: this.review1_Img2,
-      IMG_URL_3: this.review1_Img3,
-      COUPLE_NAMES: this.coupleNames1,
-      EVENT_DATE: this.weddingDate1,
-      DESCRIPTION: this.comment1,
-      VIDEO_LINK: this.videoId1,
-      CODE: "1",
-    };
+    const review1 = new FormData();
+    review1.append('LANGUAGE', 'EN');
+    review1.append('CODE', '1');
+    review1.append('COUPLE_NAMES', this.coupleNames1 as string);
+    review1.append('EVENT_DATE', this.weddingDate1 as string);
+    review1.append('DESCRIPTION', this.comment1 as string);
+    review1.append('VIDEO_LINK', this.videoId1 as string);
+    if (this.review1File1) review1.append('IMG_URL_1', this.review1File1);
+    if (this.review1File2) review1.append('IMG_URL_2', this.review1File2);
+    if (this.review1File3) review1.append('IMG_URL_3', this.review1File3);
 
-    const review2: Review = {
-      LANGUAGE: "EN",
-      IMG_URL_1: this.review2_Img1,
-      IMG_URL_2: this.review2_Img2,
-      IMG_URL_3: this.review2_Img3,
-      COUPLE_NAMES: this.coupleNames2,
-      EVENT_DATE: this.weddingDate2,
-      DESCRIPTION: this.comment2,
-      VIDEO_LINK: this.videoId2,
-      CODE: "2",
-    };
+    const review2 = new FormData();
+    review2.append('LANGUAGE', 'EN');
+    review2.append('CODE', '2');
+    review2.append('COUPLE_NAMES', this.coupleNames2 as string);
+    review2.append('EVENT_DATE', this.weddingDate2 as string);
+    review2.append('DESCRIPTION', this.comment2 as string);
+    review2.append('VIDEO_LINK', this.videoId2 as string);
+    if (this.review2File1) review2.append('IMG_URL_1', this.review2File1);
+    if (this.review2File2) review2.append('IMG_URL_2', this.review2File2);
+    if (this.review2File3) review2.append('IMG_URL_3', this.review2File3);
 
-    const review3: Review = {
-      LANGUAGE: "EN",
-      IMG_URL_1: this.review3_Img1,
-      IMG_URL_2: this.review3_Img2,
-      IMG_URL_3: this.review3_Img3,
-      COUPLE_NAMES: this.coupleNames3,
-      EVENT_DATE: this.weddingDate3,
-      DESCRIPTION: this.comment3,
-      VIDEO_LINK: this.videoId3,
-      CODE: "3",
-    };
+    const review3 = new FormData();
+    review3.append('LANGUAGE', 'EN');
+    review3.append('CODE', '3');
+    review3.append('COUPLE_NAMES', this.coupleNames3 as string);
+    review3.append('EVENT_DATE', this.weddingDate3 as string);
+    review3.append('DESCRIPTION', this.comment3 as string);
+    review3.append('VIDEO_LINK', this.videoId3 as string);
+    if (this.review3File1) review3.append('IMG_URL_1', this.review3File1);
+    if (this.review3File2) review3.append('IMG_URL_2', this.review3File2);
+    if (this.review3File3) review3.append('IMG_URL_3', this.review3File3);
+
     this.reviewService.addReviews(review1, review2, review3).then(
       response => {
         console.log('Reviews guardado con éxito', response);
@@ -191,5 +183,5 @@ export class ReviewComponent {
         alert('Hubo un error al guardar Review , Intenta mas tarde');
       }
     );
-  }     
+  }
 }

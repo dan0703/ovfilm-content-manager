@@ -23,21 +23,22 @@ photoGallery: PhotoGallery | undefined;
   headerText: String = '';
   imageUrl: String = "";
   descriptionText: String='';
-  selectedImages: File[] = []; 
+  selectedImages: File[] = [];
   imageList: Image[] = [];
   language: String = 'EN';
   currentLang = '';
 
+  imgFile1: File | null = null;
+
 constructor(private imageService: ImageService, private photoGalleryService: PhotoGalleryService, private route: ActivatedRoute, private router: Router) {
-} 
+}
 
 async ngOnInit() {
-  await this.logIn();
   this.route.paramMap.subscribe(params => {
     const lang = params.get('lang');
     if (lang === 'EN' || lang === 'ES') {
       this.currentLang = lang;
-      this.loadPhotoGallery(this.currentLang); 
+      this.loadPhotoGallery(this.currentLang);
     }
   });
 }
@@ -46,7 +47,6 @@ private async loadPhotoGallery(currentLang: string) {
   try {
     const photoGallery = await this.photoGalleryService.getPhotoGallery(currentLang);
     if (photoGallery) {
-      console.log('photoGallery:', photoGallery);
       this.photoGallery = photoGallery;
         this.language = photoGallery.LANGUAGE;
         this.headerText = photoGallery.TITLE;
@@ -58,57 +58,46 @@ private async loadPhotoGallery(currentLang: string) {
   }
 }
 
-async logIn() {
-    this.imageService.login('ovfilm@gmail.com', 'OV2025').subscribe({
-      next: (response) => {
-        console.log("Inicio de sesión exitoso:", response);
-      },
-      error: (error) => {
-        console.error("Error al iniciar sesión:", error);
-      }
-    });
-  }
-
   async startUpload() {
     if (this.selectedImages.length === 0) {
       console.log("No hay imágenes para subir.");
       return;
     }
-  
+
     console.log(this.selectedImages.length);
-  
+
     try {
       await lastValueFrom(this.imageService.deleteAllImages());
       console.log("Imágenes eliminadas con éxito");
-  
+
       let uploadedImages: Image[] = [];
-  
+
       const uploadPromises = this.selectedImages.map(async (image) => {
         console.log(image.name);
         try {
           const uploadResponse = await lastValueFrom(this.imageService.uploadFile(image));
           console.log("Imagen subida con éxito:", uploadResponse);
-          
+
           const newImage: Image = {
             IMAGE_LINK: uploadResponse.url,
             IMAGE_NAME: uploadResponse.filename,
             loaded: false
           };
-  
+
           uploadedImages.push(newImage);
         } catch (uploadError) {
           console.error("Error al subir la imagen:", uploadError);
         }
       });
-  
+
       await Promise.all(uploadPromises);
-  
+
       console.log('Imágenes subidas:', uploadedImages);
-  
+
       await this.photoGalleryService.addAllPhotos(uploadedImages);
       console.log('Fotografías guardadas con éxito');
       alert('Fotografías guardadas correctamente');
-  
+
     } catch (error) {
       console.error("Error en el proceso de carga de imágenes:", error);
       alert('Hubo un error al guardar las fotografías, intenta más tarde');
@@ -126,51 +115,25 @@ removeImage(index: number) {
   this.selectedImages.splice(index, 1);
 }
 
-  async onFileSelected(event: any, imageType: string) {
-      if (event.target.files) {
-        this.selectedImages = Array.from(event.target.files);
-      }
-      
-      try {
-        let imageUrl = await this.uploadImage();
-        console.log('Imagen URL:', imageUrl);
-        if(imageType === 'img1') {
-          this.imageUrl = imageUrl;
-        } else {
-          console.log('Imagen no encontrada');
-        }
-      } catch (error) {
-        console.error('Error al obtener la URL de la imagen:', error);
-      }
+  onFileSelected(event: any, imageType: string) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (imageType === 'img1') {
+      this.imgFile1 = file;
+      this.imageUrl = URL.createObjectURL(file) as any;
+    } else {
+      console.log('Imagen no encontrada');
     }
-  
-    async uploadImage(): Promise<string> {
-      console.log(this.selectedImages.length);
-        let imageUrl: string = "";
-          
-        for (let image of this.selectedImages) {
-          console.log(image.name);
-          try {
-            const uploadResponse = await lastValueFrom(this.imageService.uploadFile(image));
-            console.log("Imagen subida con éxito:", uploadResponse);
-            imageUrl = uploadResponse.url;
-          } catch (uploadError) {
-            console.error("Error al subir la imagen:", uploadError);
-            break; 
-          }
-        }
-        return imageUrl;
-      }     
+  }
 
   submitPhotoGallery() {
-    const photoGalleryData: PhotoGallery = {
-      LANGUAGE: this.currentLang,
-      IMG_URL_1: this.imageUrl,
-      TITLE: this.formattedHeaderText,
-      DESCRIPTION: this.formatteddescriptionText
-    };
-    
-    this.photoGalleryService.addPhotogallery(photoGalleryData).then(
+    const formData = new FormData();
+    formData.append('LANGUAGE', this.currentLang as string);
+    formData.append('TITLE', this.formattedHeaderText as string);
+    formData.append('DESCRIPTION', this.formatteddescriptionText as string);
+    if (this.imgFile1) formData.append('IMG_URL_1', this.imgFile1);
+
+    this.photoGalleryService.addPhotogallery(formData).then(
       response => {
         console.log('photoGalleryData guardado con éxito', response);
         alert('photoGallery guardado correctamente');
@@ -181,7 +144,7 @@ removeImage(index: number) {
         alert('Hubo un error al guardar photoGallery, Intenta mas tarde');
       }
     );
-  }          
+  }
 
   get formatteddescriptionText(): string {
     return this.descriptionText.replace(/\n/g, '<br>');

@@ -6,8 +6,6 @@ import { BlogService } from '../../services/blog.service';
 import { BlogSummary } from '../../models/blog/blog-summary';
 import {RouterModule} from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ImageService } from '../../services/image.service';
-import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-add-blog',
@@ -26,47 +24,19 @@ export class AddBlogComponent {
   content_1: string = '';
   content_2: string = '';
   content_3: string = '';
-  selectedImages: File[] = []; 
   description: string = '';
   img_1: string = 'assets/w1-highlight-1.png';
   img_2: string = 'assets/w1-highlight-2.png';
   img_3: string = 'assets/w1-highlight-3.png';
 
-  constructor(private route: ActivatedRoute, private blogService: BlogService, private imageService: ImageService) {
-    
-  }
-  async ngOnInit() {
-    await this.logIn();
-    
-  }
-  async logIn() {
-    this.imageService.login('ovfilm@gmail.com', 'OV2025').subscribe({
-      next: (response) => {
-        console.log("Inicio de sesión exitoso:", response);
-      },
-      error: (error) => {
-        console.error("Error al iniciar sesión:", error);
-      }
-    });
-  }
+  imgFile1: File | null = null;
+  imgFile2: File | null = null;
+  imgFile3: File | null = null;
 
-  async uploadImage(): Promise<string> {
-    console.log(this.selectedImages.length);
-    let imageUrl: string = "";
-    
-    for (let image of this.selectedImages) {
-      console.log(image.name);
-      try {
-        const uploadResponse = await lastValueFrom(this.imageService.uploadFile(image));
-        console.log("Imagen subida con éxito:", uploadResponse);
-        imageUrl = uploadResponse.url;
-      } catch (uploadError) {
-        console.error("Error al subir la imagen:", uploadError);
-        break; 
-      }
-    }
-    return imageUrl;
+  constructor(private route: ActivatedRoute, private blogService: BlogService) {
+
   }
+  async ngOnInit() {}
 
   get formattedContentText_1(): string {
     return this.content_1.replace(/\n/g, '<br>');
@@ -80,25 +50,20 @@ export class AddBlogComponent {
   }
 
 
-  async onFileSelected(event: any, imageType: string) {
-    if (event.target.files) {
-      this.selectedImages = Array.from(event.target.files);
-    }
-    
-    try {
-      let imageUrl = await this.uploadImage();
-      console.log('Imagen URL:', imageUrl);
-      if(imageType === 'img1') {
-        this.img_1 = imageUrl;
-      } else if(imageType === 'img2') {
-        this.img_2 = imageUrl;
-      } else if(imageType === 'img3') {
-        this.img_3 = imageUrl;
-      } else {
-        console.log('Imagen no encontrada');
-      }
-    } catch (error) {
-      console.error('Error al obtener la URL de la imagen:', error);
+  onFileSelected(event: any, imageType: string) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (imageType === 'img1') {
+      this.imgFile1 = file;
+      this.img_1 = URL.createObjectURL(file) as any;
+    } else if (imageType === 'img2') {
+      this.imgFile2 = file;
+      this.img_2 = URL.createObjectURL(file) as any;
+    } else if (imageType === 'img3') {
+      this.imgFile3 = file;
+      this.img_3 = URL.createObjectURL(file) as any;
+    } else {
+      console.log('Imagen no encontrada');
     }
   }
 
@@ -106,22 +71,21 @@ export class AddBlogComponent {
   blogList: BlogSummary[] = [];
 
   submitArticle() {
-    const articleData: Blog = {
-      title: this.title,
-      date: this.date,
-      subtitle1: this.subtitle_1,
-      content1: this.content_1,
-      subtitle2: this.subtitle_2,
-      content2: this.content_2,
-      content3: this.content_3,
-      imgUrl: this.img_1,
-      imgUrl2: this.img_2,
-      imgUrl3: this.img_3,
-      id: 0,
-      description: this.description
-    };
-    
-    this.blogService.addArticle(articleData).then(
+    const formData = new FormData();
+    formData.append('LANGUAGE', 'EN');
+    formData.append('title', this.title as string);
+    formData.append('subtitle1', this.subtitle_1 as string);
+    formData.append('subtitle2', this.subtitle_2 as string);
+    formData.append('description', this.description as string);
+    formData.append('content1', this.content_1 as string);
+    formData.append('content2', this.content_2 as string);
+    formData.append('content3', this.content_3 as string);
+    formData.append('date', this.date as string);
+    if (this.imgFile1) formData.append('imgUrl', this.imgFile1);
+    if (this.imgFile2) formData.append('imgUrl2', this.imgFile2);
+    if (this.imgFile3) formData.append('imgUrl3', this.imgFile3);
+
+    this.blogService.addArticle(formData).then(
       response => {
         alert('Artículo guardado correctamente');
       }
