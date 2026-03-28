@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceRequest } from '../models/service-request/service-request';
 import { ContactUs } from '../models/contactUs/contactUs';
+import { environment } from '../config/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class ContactService {
       
       `, 
     };
-        return this.http.post('http://garmannetworks.online:781/send-email', requestBody).subscribe(
+        return this.http.post(`${environment.apiUrl}/send-email`, requestBody).subscribe(
       (response) => {
         console.log('Correo enviado con éxito:', response);
       },
@@ -32,7 +33,12 @@ export class ContactService {
       }
     );
   }
-  url = 'http://garmannetworks.online:781';
+  url = environment.apiUrl;
+
+  private authHeaders(): Record<string, string> {
+    const token = localStorage.getItem('ovfilm_jwt');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  }
 
   async addContactUs(contactUs: ContactUs): Promise<any> {
     try {
@@ -42,6 +48,7 @@ export class ContactService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...this.authHeaders(),
         },
         body: JSON.stringify(contactUs),
       });

@@ -1,28 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Blog } from '../models/blog/blog';
-import { BlogSummary } from '../models/blog/blog-summary';
-import { AboutUs } from '../models/aboutUs/aboutUs';
 import { PhotoGallery } from '../models/photoGallery/photoGallery';
-import { Image } from '../models/image/image'; // Adjust the import path as necessary
+import { Image } from '../models/image/image';
+import { environment } from '../config/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoGalleryService {
-  
-    // url = 'http://localhost:1624';
-    url = 'http://garmannetworks.online:781';
+
+    url = environment.apiUrl;
+
+  private authHeaders(): Record<string, string> {
+    const token = localStorage.getItem('ovfilm_jwt');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  }
+
+  private prependUrl(path: any): any {
+    if (path && !path.startsWith('http')) {
+      return `${this.url}/${path}`;
+    }
+    return path;
+  }
       
-    async addPhotogallery(photoGallery: PhotoGallery): Promise<any> {
+    async addPhotogallery(formData: FormData): Promise<any> {
       try {
-        console.log('Enviando photoGallery:', photoGallery);
-    
+        console.log('Enviando photoGallery:', formData);
+
         const response = await fetch(`${this.url}/admin/photoGallery`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(photoGallery),
+          headers: this.authHeaders(),
+          body: formData,
         });
     
         if (!response.ok) {
@@ -50,6 +58,7 @@ export class PhotoGalleryService {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            ...this.authHeaders(),
           },
           body: JSON.stringify(images),
         });
@@ -78,7 +87,7 @@ export class PhotoGalleryService {
         throw new Error(`Failed to fetch photoGallery: ${response.status} ${response.statusText}`);
       }
       const data: PhotoGallery = await response.json();
-  
+      data.IMG_URL_1 = this.prependUrl(data.IMG_URL_1);
       return data;
     } catch (error) {
       console.error('Failed to fetch photoGallery:', error);

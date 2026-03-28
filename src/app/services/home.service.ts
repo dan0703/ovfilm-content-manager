@@ -1,26 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Blog } from '../models/blog/blog';
-import { BlogSummary } from '../models/blog/blog-summary';
 import { AboutUs } from '../models/aboutUs/aboutUs';
+import { environment } from '../config/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class HomeService {
-  
-    // url = 'http://localhost:1624';
-    url = 'http://garmannetworks.online:781';
+
+    url = environment.apiUrl;
+
+  private authHeaders(): Record<string, string> {
+    const token = localStorage.getItem('ovfilm_jwt');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  }
+
+  private prependUrl(path: any): any {
+    if (path && !path.startsWith('http')) {
+      return `${this.url}/${path}`;
+    }
+    return path;
+  }
+
       
-    async addAboutUs(aboutUs: AboutUs): Promise<any> {
+    async addAboutUs(formData: FormData): Promise<any> {
       try {
-        console.log('Enviando aboutUs:', aboutUs);
-    
+        console.log('Enviando aboutUs:', formData);
+
         const response = await fetch(`${this.url}/admin/aboutUs`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(aboutUs),
+          headers: this.authHeaders(),
+          body: formData,
         });
     
         if (!response.ok) {
@@ -46,6 +56,9 @@ export class HomeService {
         throw new Error(`Failed to fetch about us: ${response.status} ${response.statusText}`);
       }
       const data: AboutUs = await response.json();
+      data.IMG_URL_1 = this.prependUrl(data.IMG_URL_1);
+      data.IMG_URL_2 = this.prependUrl(data.IMG_URL_2);
+      data.IMG_URL_3 = this.prependUrl(data.IMG_URL_3);
       console.log('About us fetched successfully:', data);
       return data;
     } catch (error) {

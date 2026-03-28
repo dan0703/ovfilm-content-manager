@@ -2,12 +2,26 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Video } from '../models/video/video';
 import { VideoGallery } from '../models/video/videoGallery';
+import { environment } from '../config/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class VideoService {
 
-  url = 'http://garmannetworks.online:781';
+  url = environment.apiUrl;
+
+  private authHeaders(): Record<string, string> {
+    const token = localStorage.getItem('ovfilm_jwt');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  }
+
+  private prependUrl(path: any): any {
+    if (path && !path.startsWith('http')) {
+      return `${this.url}/${path}`;
+    }
+    return path;
+  }
 
     async getAllVideos(): Promise<Video[]>{
         const data = await fetch(this.url+'/videolist');
@@ -22,6 +36,7 @@ export class VideoService {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            ...this.authHeaders(),
           },
           body: JSON.stringify(video),
         });
@@ -46,6 +61,7 @@ export class VideoService {
       try{
         const response = await fetch(`${this.url}/admin/video?_id=${_id}`, {
           method: 'DELETE',
+          headers: this.authHeaders(),
         });
         if (!response.ok) {
           throw new Error(`Failed to delete video: ${response.status} ${response.statusText}`);
@@ -58,16 +74,14 @@ export class VideoService {
       }
     }
 
-    async addVideoGallery(videoGallery: VideoGallery): Promise<any> {
+    async addVideoGallery(formData: FormData): Promise<any> {
       try {
-        console.log('Enviando videoGallery:', videoGallery);
-    
+        console.log('Enviando videoGallery:', formData);
+
         const response = await fetch(`${this.url}/admin/videoGallery`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(videoGallery),
+          headers: this.authHeaders(),
+          body: formData,
         });
     
         if (!response.ok) {
@@ -93,6 +107,7 @@ export class VideoService {
         throw new Error(`Failed to fetch videoGallery: ${response.status} ${response.statusText}`);
       }
       const data: VideoGallery = await response.json();
+      data.IMG_URL_1 = this.prependUrl(data.IMG_URL_1);
       console.log('videoGallery fetched successfully:', data);
       return data;
     } catch (error) {

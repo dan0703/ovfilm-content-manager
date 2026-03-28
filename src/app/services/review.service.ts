@@ -1,37 +1,43 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Blog } from '../models/blog/blog';
-import { BlogSummary } from '../models/blog/blog-summary';
-import { AboutUs } from '../models/aboutUs/aboutUs';
 import { Review } from '../models/review/review';
+import { environment } from '../config/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ReviewService {
-  
-    // url = 'http://localhost:1624';
-    url = 'http://garmannetworks.online:781';
+
+    url = environment.apiUrl;
+
+  private prependUrl(path: any): any {
+    if (path && !path.startsWith('http')) {
+      return `${this.url}/${path}`;
+    }
+    return path;
+  }
       
-    async addReviews(review1: Review, review2: Review, review3: Review): Promise<void> {
+    async addReviews(review1: FormData, review2: FormData, review3: FormData): Promise<void> {
         try {
           await this.sendReview(review1);
           await this.sendReview(review2);
           await this.sendReview(review3);
-      
+
           console.log('Los tres reviews fueron agregados con éxito.');
         } catch (error) {
           console.error('Error al agregar los reviews:', error);
         }
       }
-      
-    private async sendReview(review: Review): Promise<any> {
+
+    private async sendReview(formData: FormData): Promise<any> {
         try {
+            const token = localStorage.getItem('ovfilm_jwt');
             const response = await fetch(`${this.url}/admin/review`, {
             method: 'PUT',
             headers: {
-            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
             },
-            body: JSON.stringify(review),
+            body: formData,
         });
         
         if (!response.ok) {
@@ -56,7 +62,11 @@ export class ReviewService {
         throw new Error(`Failed to fetch reviews ${response.status} ${response.statusText}`);
       }
       const reviews: Review[] = await response.json();
-  
+      reviews.forEach((review: any) => {
+        review.IMG_URL_1 = this.prependUrl(review.IMG_URL_1);
+        review.IMG_URL_2 = this.prependUrl(review.IMG_URL_2);
+        review.IMG_URL_3 = this.prependUrl(review.IMG_URL_3);
+      });
       return reviews;
     } catch (error) {
       console.error('Failed to fetch reviews:', error);
