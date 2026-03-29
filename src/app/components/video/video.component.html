@@ -1,8 +1,8 @@
 <article>
     <div class="content">
-        <section>
-            <button (click)="submitVideoGallery()">Guardar</button>
-        </section>
+        <div >
+            <button class="btn-save" (click)="submitVideoGallery()">Guardar</button>
+        </div>
         <section class="hero-section">
             <div class="contact-us">
                 <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img1')">
@@ -17,14 +17,15 @@
         </section>
     </div>
     <input type="text" [(ngModel)]="videoLink" placeholder="https://vimeo.com/1021831845" class="h2">
-    <button type="submit" (click)="uploadMainVideo(videoLink)">Ver</button>
+    <button class="btn-secondary" (click)="uploadMainVideo(videoLink)">Ver</button>
+    <button class="btn-save" (click)="setDefaultVideo()">Asignar video principal</button>
 
     <div class="hero-video-container">
-        <iframe 
-          [src]="sanitizedVideoUrl" 
-          frameborder="0" 
-          allow="autoplay; fullscreen; picture-in-picture" 
-          allowfullscreen 
+        <iframe
+          [src]="sanitizedVideoUrl"
+          frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
           class="hero-video">
         </iframe>
     </div>
@@ -40,18 +41,18 @@
         </div>
 
         <section class="view-videos-carousel" #carousel>
-            <figure 
+            <figure
                 class="figure-carousel-container"
               *ngFor="let image of weddingReview.images; let i = index"
               [class.active]="i === activeImageIndex"
-              (click)="updateVideoUrl(image.videoId, i)"> 
+              (click)="updateVideoUrl(image.videoId, i)">
               <div class="img-container">
                 <img [src]="image.src" [alt]="image.alt" class="img-carousel">
               </div>
-              <button type="submit" class="delete-button" (click)="deleteVideo(i)">Eliminar</button>
+              <button class="btn-danger" (click)="deleteVideo(i)">Eliminar</button>
             </figure>
         </section>
-        
+
         <div class="arrow-right-container" (click)="scrollCarousel(1)">
             <div class="arrow-right">
                 <svg viewBox="0 0 146.41 37.09">
@@ -62,6 +63,6 @@
         </div>
 
         <input type="text" [(ngModel)]="videoId" placeholder="https://vimeo.com/1021831845" class="h2">
-        <button type="submit" (click)="uploadVideo(videoId)">Guardar</button>
+        <button class="btn-save" (click)="uploadVideo(videoId)">Guardar video</button>
     </section>
 </article>

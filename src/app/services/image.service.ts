@@ -22,6 +22,12 @@ export class ImageService {
     return this.http.post(`${this.apiUrl}/admin/image/upload`, formData);
   }
 
+  deleteImage(imageName: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/admin/image`, {
+      body: { IMAGE_NAME: imageName },
+    });
+  }
+
   deleteAllImages(): Observable<any> {
     return this.http.delete(`${this.apiUrl}/admin/AllImages`);
   }

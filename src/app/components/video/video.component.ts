@@ -37,10 +37,10 @@ export class VideoComponent {
   currentLang = '';
 
   get formattedheaderText(): string {
-    return this.headerText.replace(/\n/g, '<br>');
+    return (this.headerText || '').replace(/\n/g, '<br>');
   }
   get formatteddescriptionText(): string {
-    return this.descriptionText.replace(/\n/g, '<br>');
+    return (this.descriptionText || '').replace(/\n/g, '<br>');
   }
   async ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -103,7 +103,7 @@ export class VideoComponent {
   constructor(private sanitizer: DomSanitizer) {
 
     this.videoService.getAllVideos().then((videoList: Video[]) => {
-      this.videoList = videoList;
+      this.videoList = Array.isArray(videoList) ? videoList : [];
       this.weddingReview.images = this.videoList.map((video) => ({
         src: video.THUMBNAIL_LINK,
         alt: 'Wedding video thumbnail',
@@ -144,23 +144,48 @@ export class VideoComponent {
     });
   }
 
+  setDefaultVideo() {
+    if (!this.videoLink) {
+      alert('Ingresa un link de video primero');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('LANGUAGE', this.currentLang);
+    formData.append('TITLE', this.formattedheaderText);
+    formData.append('DESCRIPTION', this.formatteddescriptionText);
+    formData.append('VIDEO_LINK', this.videoLink.toString());
+
+    this.videoService.addVideoGallery(formData).then(
+      () => alert('Video principal asignado correctamente'),
+    ).catch(
+      (error: any) => alert('Error al asignar video: ' + (error?.message || error)),
+    );
+  }
+
   submitVideoGallery() {
     const formData = new FormData();
-    formData.append('LANGUAGE', this.currentLang as string);
-    formData.append('TITLE', this.formattedheaderText as string);
-    formData.append('DESCRIPTION', this.formatteddescriptionText as string);
-    formData.append('VIDEO_LINK', this.videoLink as string);
+    formData.append('LANGUAGE', this.currentLang);
+    formData.append('TITLE', this.formattedheaderText);
+    formData.append('DESCRIPTION', this.formatteddescriptionText);
+    formData.append('VIDEO_LINK', this.videoLink.toString());
     if (this.imgFile1) formData.append('IMG_URL_1', this.imgFile1);
+
+    console.log('submitVideoGallery:', {
+      LANGUAGE: this.currentLang,
+      TITLE: this.formattedheaderText,
+      VIDEO_LINK: this.videoLink.toString(),
+      hasImage: !!this.imgFile1,
+    });
 
     this.videoService.addVideoGallery(formData).then(
       response => {
-        console.log('About us guardado con éxito', response);
-        alert('About us guardado correctamente');
+        console.log('VideoGallery guardado con éxito', response);
+        alert('VideoGallery guardado correctamente');
       }
     ).catch(
       error => {
-        console.error('Error al guardar about us', error);
-        alert('Hubo un error al guardar about us, Intenta mas tarde');
+        console.error('Error al guardar VideoGallery:', error);
+        alert('Error al guardar VideoGallery: ' + (error?.message || error));
       }
     );
   }

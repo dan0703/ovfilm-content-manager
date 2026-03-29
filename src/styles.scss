@@ -29,3 +29,77 @@
   
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+// ============================================
+// CM Admin Button System
+// ============================================
+
+.btn-save {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  background: #80B9B1;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  min-height: 44px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.2s ease;
+  &:hover { background: #6a9f97; }
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.btn-danger {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  background: #d9534f;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  min-height: 40px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  &:hover { background: #c9302c; }
+}
+
+.btn-secondary {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  background: transparent;
+  color: #333;
+  border: 1px solid #333;
+  padding: 10px 24px;
+  min-height: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    background: #333;
+    color: white;
+  }
+}
+
+.img-upload {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  padding: 8px;
+  border: 1px dashed #aaa;
+  background: #fafafa;
+  cursor: pointer;
+  &::file-selector-button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    background: #eee;
+    border: 1px solid #ccc;
+    padding: 6px 16px;
+    margin-right: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    &:hover { background: #ddd; }
+  }
+}

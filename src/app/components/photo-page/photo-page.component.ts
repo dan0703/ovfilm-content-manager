@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { PhotoGalleryComponent } from "../photo-gallery/photo-gallery.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { PhotoGallery } from '../../models/photoGallery/photoGallery';
 import { PhotoGalleryService } from '../../services/photoGallery.service';
 import { lastValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-photo-page',
@@ -16,104 +17,130 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './photo-page.component.html',
   styleUrl: './photo-page.component.scss'
 })
-export class PhotoPageComponent {
+export class PhotoPageComponent implements OnDestroy {
 
-photoGallery: PhotoGallery | undefined;
-
+  photoGallery: PhotoGallery | undefined;
   headerText: String = '';
-  imageUrl: String = "";
-  descriptionText: String='';
+  imageUrl: String = '';
+  descriptionText: String = '';
   selectedImages: File[] = [];
-  imageList: Image[] = [];
+  existingImages: Image[] = [];
+  @Input() imageList: Image[] = [];
   language: String = 'EN';
   currentLang = '';
-
   imgFile1: File | null = null;
+  isUploading: boolean = false;
+  uploadProgress: number = 0;
+  uploadTotal: number = 0;
+  private routeSub?: Subscription;
 
-constructor(private imageService: ImageService, private photoGalleryService: PhotoGalleryService, private route: ActivatedRoute, private router: Router) {
-}
+  constructor(
+    private imageService: ImageService,
+    private photoGalleryService: PhotoGalleryService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {}
 
-async ngOnInit() {
-  this.route.paramMap.subscribe(params => {
-    const lang = params.get('lang');
-    if (lang === 'EN' || lang === 'ES') {
-      this.currentLang = lang;
-      this.loadPhotoGallery(this.currentLang);
-    }
-  });
-}
+  ngOnInit() {
+    this.loadExistingImages();
+    this.routeSub = this.route.paramMap.subscribe(params => {
+      const lang = params.get('lang');
+      if (lang === 'EN' || lang === 'ES') {
+        this.currentLang = lang;
+        this.loadPhotoGallery(this.currentLang);
+      }
+    });
+  }
 
-private async loadPhotoGallery(currentLang: string) {
-  try {
-    const photoGallery = await this.photoGalleryService.getPhotoGallery(currentLang);
-    if (photoGallery) {
-      this.photoGallery = photoGallery;
+  ngOnDestroy() {
+    this.routeSub?.unsubscribe();
+  }
+
+  private async loadPhotoGallery(currentLang: string) {
+    try {
+      const photoGallery = await this.photoGalleryService.getPhotoGallery(currentLang);
+      if (photoGallery) {
+        this.photoGallery = photoGallery;
         this.language = photoGallery.LANGUAGE;
         this.headerText = photoGallery.TITLE;
         this.imageUrl = photoGallery.IMG_URL_1 || 'assets/home-photo.png';
         this.descriptionText = photoGallery.DESCRIPTION;
+      }
+    } catch (error) {
+      console.error('Error al cargar photoGallery:', error);
     }
-  } catch (error) {
-    console.error('Error al cargar photoGallery:', error);
   }
-}
+
+  loadExistingImages() {
+    this.imageService.getImages().subscribe({
+      next: (data: Image[]) => {
+        this.existingImages = data;
+      },
+      error: (error) => {
+        console.error('Error loading existing images:', error);
+      }
+    });
+  }
+
+  async deleteImage(imageName: string) {
+    if (!confirm('¿Eliminar esta imagen?')) return;
+    try {
+      await lastValueFrom(this.imageService.deleteImage(imageName));
+      this.existingImages = this.existingImages.filter(img => img.IMAGE_NAME !== imageName);
+    } catch (error) {
+      console.error('Error al eliminar imagen:', error);
+      alert('Error al eliminar la imagen');
+    }
+  }
+
+  async deleteAllImages() {
+    if (!confirm('¿Eliminar TODAS las imágenes de la galería?')) return;
+    try {
+      await lastValueFrom(this.imageService.deleteAllImages());
+      this.existingImages = [];
+      alert('Galería vaciada correctamente');
+    } catch (error) {
+      console.error('Error al eliminar imágenes:', error);
+      alert('Error al vaciar la galería');
+    }
+  }
 
   async startUpload() {
     if (this.selectedImages.length === 0) {
-      console.log("No hay imágenes para subir.");
+      alert('No hay imágenes seleccionadas');
       return;
     }
 
-    console.log(this.selectedImages.length);
+    this.isUploading = true;
+    this.uploadProgress = 0;
+    this.uploadTotal = this.selectedImages.length;
 
     try {
-      await lastValueFrom(this.imageService.deleteAllImages());
-      console.log("Imágenes eliminadas con éxito");
+      for (const image of this.selectedImages) {
+        await lastValueFrom(this.imageService.uploadFile(image));
+        this.uploadProgress++;
+      }
 
-      let uploadedImages: Image[] = [];
-
-      const uploadPromises = this.selectedImages.map(async (image) => {
-        console.log(image.name);
-        try {
-          const uploadResponse = await lastValueFrom(this.imageService.uploadFile(image));
-          console.log("Imagen subida con éxito:", uploadResponse);
-
-          const newImage: Image = {
-            IMAGE_LINK: uploadResponse.url,
-            IMAGE_NAME: uploadResponse.filename,
-            loaded: false
-          };
-
-          uploadedImages.push(newImage);
-        } catch (uploadError) {
-          console.error("Error al subir la imagen:", uploadError);
-        }
-      });
-
-      await Promise.all(uploadPromises);
-
-      console.log('Imágenes subidas:', uploadedImages);
-
-      await this.photoGalleryService.addAllPhotos(uploadedImages);
-      console.log('Fotografías guardadas con éxito');
-      alert('Fotografías guardadas correctamente');
-
+      this.selectedImages = [];
+      this.loadExistingImages();
+      alert('Imágenes subidas correctamente');
     } catch (error) {
-      console.error("Error en el proceso de carga de imágenes:", error);
-      alert('Hubo un error al guardar las fotografías, intenta más tarde');
+      console.error('Error al subir imágenes:', error);
+      alert(`Error al subir imágenes (${this.uploadProgress}/${this.uploadTotal} completadas)`);
+    } finally {
+      this.isUploading = false;
     }
   }
 
   onMultipleFilesSelected(event: any) {
     if (event.target.files) {
       this.selectedImages = Array.from(event.target.files);
-      console.log('Archivos seleccionados:', this.selectedImages);
     }
   }
 
-removeImage(index: number) {
-  this.selectedImages.splice(index, 1);
-}
+  removeSelectedImage(index: number) {
+    this.selectedImages.splice(index, 1);
+  }
 
   onFileSelected(event: any, imageType: string) {
     const file = event.target.files?.[0];
@@ -121,8 +148,6 @@ removeImage(index: number) {
     if (imageType === 'img1') {
       this.imgFile1 = file;
       this.imageUrl = URL.createObjectURL(file) as any;
-    } else {
-      console.log('Imagen no encontrada');
     }
   }
 
@@ -134,15 +159,9 @@ removeImage(index: number) {
     if (this.imgFile1) formData.append('IMG_URL_1', this.imgFile1);
 
     this.photoGalleryService.addPhotogallery(formData).then(
-      response => {
-        console.log('photoGalleryData guardado con éxito', response);
-        alert('photoGallery guardado correctamente');
-      }
+      () => alert('PhotoGallery guardado correctamente'),
     ).catch(
-      error => {
-        console.error('Error al guardar photoGallery', error);
-        alert('Hubo un error al guardar photoGallery, Intenta mas tarde');
-      }
+      () => alert('Error al guardar PhotoGallery'),
     );
   }
 

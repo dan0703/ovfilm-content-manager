@@ -1,0 +1,8 @@
+{
+  "/uploads/**": {
+    "target": "http://localhost:1624",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

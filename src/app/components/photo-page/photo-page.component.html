@@ -1,31 +1,65 @@
 <article>
-    <div class = "content">
-        <button (click)="submitPhotoGallery()">Guardar</button>
+    <div class="content">
+        <button class="btn-save" (click)="submitPhotoGallery()">Guardar</button>
         <section class="hero-section">
             <div class="contact-us">
                 <input type="file" class="img-upload" accept="image/*" (change)="onFileSelected($event, 'img1')">
-                <img class="img-experience" [src]="imageUrl || 'assets/photo-page.jpg'" alt="Couple hugging face to face">
+                <img class="img-experience" [src]="imageUrl || 'assets/photo-page.jpg'" alt="Cover photo">
             </div>
             <div class="label-experience">
                 <textarea [(ngModel)]="headerText" class="p" placeholder="Escribe aquí el titulo..."></textarea>
                 <textarea [(ngModel)]="descriptionText" class="p" placeholder="Escribe aquí el contenido..."></textarea>
-                <h2><div [innerHTML]="formattedHeaderText" class="h2"> </div></h2>
+                <h2><div [innerHTML]="formattedHeaderText" class="h2"></div></h2>
                 <div [innerHTML]="formatteddescriptionText"></div>
             </div>
         </section>
+
         <section class="multi-upload-section">
-            <h2>Subir imagenes</h2>
-            <input type="file" multiple (change)="onMultipleFilesSelected($event)">
-            
-            <div class="preview-container">
-                <div *ngFor="let img of selectedImages; let i = index" class="preview">
-                    <img [src]="img" alt="Previsualización de imagen">
-                    <button (click)="removeImage(i)">✖</button>
+            <h2>Subir imágenes a la galería</h2>
+            <input type="file" multiple accept="image/*" (change)="onMultipleFilesSelected($event)" [disabled]="isUploading">
+            <div class="selected-preview" *ngIf="selectedImages.length > 0 && !isUploading">
+                <p>{{ selectedImages.length }} imagen(es) seleccionada(s)</p>
+                <div class="preview-container">
+                    <div *ngFor="let img of selectedImages; let i = index" class="preview">
+                        <span class="preview-name">{{ img.name }}</span>
+                        <button (click)="removeSelectedImage(i)" class="btn-remove">✖</button>
+                    </div>
                 </div>
             </div>
-            <button type="submit" (click)="startUpload()" class="button-upload">Subir fotos</button>
-
+            <div class="upload-progress" *ngIf="isUploading">
+                <p>Subiendo {{ uploadProgress }} de {{ uploadTotal }}...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="(uploadProgress / uploadTotal) * 100"></div>
+                </div>
+            </div>
+            <button
+                type="submit"
+                (click)="startUpload()"
+                class="btn-save"
+                [disabled]="isUploading || selectedImages.length === 0">
+                {{ isUploading ? 'Subiendo...' : 'Subir fotos' }}
+            </button>
         </section>
+
+        <section class="gallery-management">
+            <div class="gallery-header">
+                <h2>Galería actual ({{ existingImages.length }} fotos)</h2>
+                <button
+                    *ngIf="existingImages.length > 0"
+                    (click)="deleteAllImages()"
+                    class="btn-danger">
+                    Eliminar todas
+                </button>
+            </div>
+            <div class="existing-grid" *ngIf="existingImages.length > 0">
+                <div *ngFor="let img of existingImages" class="existing-thumb">
+                    <img [src]="img.THUMBNAIL_LINK || img.IMAGE_LINK" [alt]="img.IMAGE_NAME" loading="lazy">
+                    <button (click)="deleteImage(img.IMAGE_NAME)" class="btn-remove-thumb">✖</button>
+                </div>
+            </div>
+            <p *ngIf="existingImages.length === 0" class="empty-gallery">No hay imágenes en la galería</p>
+        </section>
+
         <section>
             <app-photo-gallery [imageList]="imageList"></app-photo-gallery>
         </section>
