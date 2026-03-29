@@ -9,7 +9,7 @@ function detectEnvironment(): EnvironmentConfig {
 
   return {
     production: !isDevelopment,
-    apiUrl: isDevelopment ? 'http://localhost:1624' : 'https://ovfilm.com/api',
+    apiUrl: isDevelopment ? 'http://localhost:1624' : 'https://api.ovfilm.com',
   };
 }
 
