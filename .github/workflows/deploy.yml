@@ -1,0 +1,44 @@
+name: Deploy Content Manager
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Build Angular
+        run: npx ng build --configuration production
+
+      - name: Deploy to VM via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_HOST }}
+          port: ${{ secrets.VM_SSH_PORT }}
+          username: ${{ secrets.VM_USERNAME }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          source: "dist/ovfilm-content-manager/browser/*"
+          target: "/var/www/ovfilm-cm"
+          strip_components: 3
+          overwrite: true
+
+      - name: Deployment Success
+        if: success()
+        run: |
+          echo "Deployment successful!"
+          echo "Content Manager deployed to cm.ovfilm.services"
