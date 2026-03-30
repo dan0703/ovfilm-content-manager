@@ -9,6 +9,7 @@ import { PhotoGalleryService } from '../../services/photoGallery.service';
 import { lastValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { environment } from '../../config/environment';
 
 @Component({
   selector: 'app-photo-page',
@@ -74,7 +75,14 @@ export class PhotoPageComponent implements OnDestroy {
   loadExistingImages() {
     this.imageService.getImages().subscribe({
       next: (data: Image[]) => {
-        this.existingImages = data;
+        const apiUrl = environment.apiUrl;
+        this.existingImages = data.map((img) => ({
+          ...img,
+          IMAGE_LINK: img.IMAGE_LINK?.startsWith('http') ? img.IMAGE_LINK : `${apiUrl}/${img.IMAGE_LINK}`,
+          THUMBNAIL_LINK: img.THUMBNAIL_LINK
+            ? (img.THUMBNAIL_LINK.startsWith('http') ? img.THUMBNAIL_LINK : `${apiUrl}/${img.THUMBNAIL_LINK}`)
+            : undefined,
+        }));
       },
       error: (error) => {
         console.error('Error loading existing images:', error);

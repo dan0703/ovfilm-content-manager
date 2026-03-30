@@ -4,6 +4,7 @@ import { CarouselComponent } from "../carousel/carousel.component";
 import { Image } from '../../models/image/image';
 import { ImageService } from '../../services/image.service';
 import { Subscription } from 'rxjs';
+import { environment } from '../../config/environment';
 
 @Component({
   selector: 'app-photo-gallery',
@@ -37,9 +38,12 @@ export class PhotoGalleryComponent implements OnDestroy {
     this.imageSub = this.imageService.getImages().subscribe({
       next: (data: Image[]) => {
         this.imageList = data;
+        const apiUrl = environment.apiUrl;
         this.images = this.imageList.map((img: Image) => ({
-          url: img.IMAGE_LINK,
-          thumbnailUrl: img.THUMBNAIL_LINK || img.IMAGE_LINK,
+          url: img.IMAGE_LINK.startsWith('http') ? img.IMAGE_LINK : `${apiUrl}/${img.IMAGE_LINK}`,
+          thumbnailUrl: (img.THUMBNAIL_LINK || img.IMAGE_LINK).startsWith('http')
+            ? (img.THUMBNAIL_LINK || img.IMAGE_LINK)
+            : `${apiUrl}/${img.THUMBNAIL_LINK || img.IMAGE_LINK}`,
           loaded: false
         }));
       },
